@@ -1,16 +1,26 @@
 package com.project.game.Screen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.project.game.GameEngine;
 
 public class Screen implements com.badlogic.gdx.Screen {
     protected GameEngine gameEngine;
     protected OrthographicCamera camera;
-    public Screen(GameEngine gameEngine) {
+
+    protected SpriteBatch batch;
+    protected BitmapFont font;
+
+    public Screen(GameEngine gameEngine,SpriteBatch batch,BitmapFont font) {
         this.gameEngine = gameEngine;
+        this.batch = batch;
+        this.font = font;
 
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, 800, 480);
+
+
     }
 
     @Override
