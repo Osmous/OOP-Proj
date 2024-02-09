@@ -1,0 +1,17 @@
+{
+  "backgroundcolour": [32, 161, 47, 255],
+  "entities": [
+    {
+      "type": "player",
+      "posX": 200,
+      "posY": 200,
+      "texturePath": "player.png"
+    },
+    {
+      "type": "enemy",
+      "posX": 100,
+      "posY": 100,
+      "texturePath": "enemy.png"
+    }
+  ]
+}

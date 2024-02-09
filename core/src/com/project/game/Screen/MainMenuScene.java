@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project.game.GameEngine;
 
-public class MainMenuScreen extends Screen {
-    public MainMenuScreen(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
+public class MainMenuScene extends Scene {
+    public MainMenuScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
         super(gameEngine, batch, font);
     }
 
@@ -29,7 +29,8 @@ public class MainMenuScreen extends Screen {
         // only single button press (coz on button down is like holding m1 continuosly) maybe find someway to implement a
         // on button up stroke or smth idk
         if (Gdx.input.isTouched()) {
-            gameEngine.setScreen(new LevelScene(gameEngine,batch,font));
+            gameEngine.sceneManager.setCurrentScene("levelscene");
+            gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath()));
             dispose();
         }
     }
