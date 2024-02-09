@@ -3,17 +3,22 @@ package com.project.game.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Entity {
+public abstract class Entity implements iDrawEntity {
     protected int posX;
     protected int posY;
+    protected String type;
     protected Texture tex;
-    protected Rectangle rectangle;
+    protected Rectangle rec;
 
-    public Entity(int posX, int posY, Texture tex, Rectangle rectangle) {
+    public Entity(int posX, int posY, String type, Texture tex, Rectangle rectangle) {
         this.posX = posX;
         this.posY = posY;
+        this.type = type;
         this.tex = tex;
-        this.rectangle = rectangle;
+        this.rec = rectangle;
+    }
+    public void dispose(){
+        this.tex.dispose();
     }
 
     public int getPosX() {
@@ -41,10 +46,18 @@ public class Entity {
     }
 
     public Rectangle getRectangle() {
-        return rectangle;
+        return rec;
     }
 
     public void setRectangle(Rectangle rectangle) {
-        this.rectangle = rectangle;
+        this.rec = rectangle;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
