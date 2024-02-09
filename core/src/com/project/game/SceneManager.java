@@ -31,6 +31,7 @@ public class SceneManager {
         // from com.badlogic.gdx.Game
         // just so i can put render here and not do a super.render() in game engine
         if (gameEngine.getScreen() != null) gameEngine.getScreen().render(Gdx.graphics.getDeltaTime());
+
         // check if level scene is active, then render all loaded entites in entity manager
         if (currentScene.equals("levelscene")) {
             for (Entity entity : gameEngine.entityManager.getLoadedEntity()) {

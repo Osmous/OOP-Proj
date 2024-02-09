@@ -41,8 +41,15 @@ public class GameEngine extends Game {
 	};
 	@Override
 	public void render() {
-		// render scene
+		// this render function basically is main event loop.
+		// techincally can just dump the io/player control function calls for movement here but
+		// look into event based listeners and update xy position in the player control manager itself.
+		// iomanager shd be using event listeners. not the if statements ah
+		// https://libgdx.com/wiki/input/event-handling
+		//
+		// render scenes
 		sceneManager.render();
+
 	};
 	@Override
 	public void dispose() {

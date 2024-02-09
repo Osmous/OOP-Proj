@@ -26,7 +26,7 @@ public class LevelScene extends Scene {
 
     @Override
     public void render(float delta) {
-        // set screen colour
+        // set screen colour, maybe set screen proper background idk. placeholder
         ScreenUtils.clear(
                 this.levelData.get("backgroundcolour").getFloat(0) / 255,
                 this.levelData.get("backgroundcolour").getFloat(1) / 255,

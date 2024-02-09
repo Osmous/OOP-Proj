@@ -18,7 +18,7 @@ public class EntityManager {
     }
 
     public void createEntity(JsonValue parameters) {
-        //Todo
+        // Todo
         // dk hard code one if statement for each type of entity? if yall got better idea how to do this pls go ahead
         // ideally just need something to determine what type of entity and and some format to pass the entity's parameters
         // into this fucntion
@@ -32,6 +32,7 @@ public class EntityManager {
         }
 
         if (parameters.getString("type").equals("enemy")) {
+            // place holder maybe enemy change stuffs abit idk
             Texture tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
             Rectangle rec = new Rectangle();
             rec.height = tex.getHeight();
@@ -42,11 +43,12 @@ public class EntityManager {
     }
 
     public void updateEntity() {
-        //todo
+        // todo
     }
 
     public void deleteEntity() {
-        //todo
+        // todo
+        // this for deleting single entities
     }
 
     public List<Entity> getLoadedEntity() {
