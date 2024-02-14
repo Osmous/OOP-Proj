@@ -30,7 +30,7 @@ public class GameEngine extends Game {
 		aiControlManager = new AIControlManager();
 		playerControlManager = new PlayerControlManager();
 		//ioManager = new IOManager();
-		ioManager = new IOManager();
+		ioManager = new IOManager(this);
 		collisionManager = new CollisionManager();
 		simulationCycleManager = new SimulationCycleManager();
 		sceneManager = new SceneManager(this);
