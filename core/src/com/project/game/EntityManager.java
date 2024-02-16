@@ -3,18 +3,22 @@ package com.project.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.JsonValue;
+import com.project.game.Entity.EnemyEntity;
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.PlayerEntity;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class EntityManager {
     private List<Entity> loadedEntities;
+    private int nextID;
 
     public EntityManager() {
         this.loadedEntities = new ArrayList<Entity>();
+        this.nextID = 0;
     }
 
     public void createEntity(JsonValue parameters) {
@@ -27,7 +31,7 @@ public class EntityManager {
             Rectangle rec = new Rectangle();
             rec.height = tex.getHeight();
             rec.width = tex.getWidth();
-            PlayerEntity player = new PlayerEntity(parameters.getInt("posX"), parameters.getInt("posY"), parameters.getString("type"), tex, rec);
+            PlayerEntity player = new PlayerEntity(this.nextID, parameters.getInt("posX"), parameters.getInt("posY"), parameters.getString("type"), tex, rec);
             this.loadedEntities.add((Entity) player);
         }
 
@@ -37,18 +41,26 @@ public class EntityManager {
             Rectangle rec = new Rectangle();
             rec.height = tex.getHeight();
             rec.width = tex.getWidth();
-            PlayerEntity player = new PlayerEntity(parameters.getInt("posX"), parameters.getInt("posY"), parameters.getString("type"), tex, rec);
-            this.loadedEntities.add((Entity) player);
+            EnemyEntity enemy = new EnemyEntity(this.nextID, parameters.getInt("posX"), parameters.getInt("posY"), parameters.getString("type"), tex, rec);
+            this.loadedEntities.add((Entity) enemy);
         }
+        this.nextID++;
     }
 
     public void updateEntity() {
         // todo
     }
 
-    public void deleteEntity() {
+    public void deleteEntity(int entityID) {
         // todo
-        // this for deleting single entities
+//        loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
+
+        for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
+            Entity entity = iter.next();
+            if (entity.getEntityID() == entityID) {
+                iter.remove();
+            }
+        }
     }
 
     public List<Entity> getLoadedEntity() {
@@ -60,5 +72,6 @@ public class EntityManager {
             entity.dispose();
         }
         this.loadedEntities = new ArrayList<Entity>();
+        this.nextID=0;
     }
 }
