@@ -1,9 +1,10 @@
 package com.project.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public abstract class Entity implements iDrawEntity {
+public abstract class Entity {
     protected int entityID;
     protected int posX;
     protected int posY;
@@ -69,5 +70,8 @@ public abstract class Entity implements iDrawEntity {
 
     public void setRec(Rectangle rec) {
         this.rec = rec;
+    }
+
+    public void renderEntity(SpriteBatch batch) {
     }
 }
