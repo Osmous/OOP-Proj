@@ -12,7 +12,7 @@ public class Scene implements com.badlogic.gdx.Screen {
     protected SpriteBatch batch;
     protected BitmapFont font;
 
-    protected Scene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
+    public Scene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
         this.gameEngine = gameEngine;
         this.batch = batch;
         this.font = font;

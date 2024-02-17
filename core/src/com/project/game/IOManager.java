@@ -9,16 +9,16 @@ public class IOManager implements InputProcessor {
 
     public IOManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        //Input.setInputProcessor(this);
+        Input.setInputProcessor(this);
         this.isButtonPressed = false;
     }
 
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.LEFT) {
-            //gameEngine.playerControlManager.movePlayerLeft();
+            gameEngine.playerControlManager.movePlayerLeft();
         } else if (keycode == Input.Keys.RIGHT) {
-            //gameEngine.playerControlManager.movePlayerRight();
+            gameEngine.playerControlManager.movePlayerRight();
         }
         return true;
     }
@@ -48,11 +48,6 @@ public class IOManager implements InputProcessor {
             isButtonPressed = false;
         }
         return true;
-    }
-
-    @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
     }
 
     @Override

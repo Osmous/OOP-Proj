@@ -4,8 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.project.game.Entity.EntityManager;
-import com.project.game.Screen.SceneManager;
 
 public class GameEngine extends Game {
 	private String gameConfigPath;
@@ -31,7 +29,7 @@ public class GameEngine extends Game {
 		entityManager = new EntityManager();
 		aiControlManager = new AIControlManager();
 		playerControlManager = new PlayerControlManager();
-		ioManager = new IOManager(this);
+		ioManager = new IOManager();
 		collisionManager = new CollisionManager();
 		simulationCycleManager = new SimulationCycleManager();
 		sceneManager = new SceneManager(this);
