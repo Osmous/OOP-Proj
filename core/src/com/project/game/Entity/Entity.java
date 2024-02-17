@@ -4,13 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity implements iDrawEntity {
+    protected int entityID;
     protected int posX;
     protected int posY;
     protected String type;
     protected Texture tex;
     protected Rectangle rec;
 
-    public Entity(int posX, int posY, String type, Texture tex, Rectangle rectangle) {
+    public Entity(int entityID, int posX, int posY, String type, Texture tex, Rectangle rectangle) {
+        this.entityID = entityID;
         this.posX = posX;
         this.posY = posY;
         this.type = type;
@@ -45,19 +47,27 @@ public abstract class Entity implements iDrawEntity {
         this.tex = tex;
     }
 
-    public Rectangle getRectangle() {
-        return rec;
-    }
-
-    public void setRectangle(Rectangle rectangle) {
-        this.rec = rectangle;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getEntityID() {
+        return entityID;
+    }
+
+    public void setEntityID(int entityID) {
+        this.entityID = entityID;
+    }
+
+    public Rectangle getRec() {
+        return rec;
+    }
+
+    public void setRec(Rectangle rec) {
+        this.rec = rec;
     }
 }
