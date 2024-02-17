@@ -11,9 +11,7 @@ public class PlayerEntity extends CharacterEntity{
 
     @Override
     public void renderEntity(SpriteBatch batch) {
-        batch.begin();
         batch.draw(this.tex, this.posX,this.posY,this.rec.width,this.rec.height);
-        batch.end();
     }
 
 }
