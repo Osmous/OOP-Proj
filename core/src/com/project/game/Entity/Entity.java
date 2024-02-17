@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity {
     protected int entityID;
-    protected int posX;
-    protected int posY;
+    protected float posX;
+    protected float posY;
     protected String type;
     protected Texture tex;
     protected Rectangle rec;
 
-    public Entity(int entityID, int posX, int posY, String type, Texture tex, Rectangle rectangle) {
+    protected Entity(int entityID, float posX, float posY, String type, Texture tex, Rectangle rectangle) {
         this.entityID = entityID;
         this.posX = posX;
         this.posY = posY;
@@ -20,58 +20,58 @@ public abstract class Entity {
         this.tex = tex;
         this.rec = rectangle;
     }
-    public void dispose(){
+    protected void dispose(){
         this.tex.dispose();
     }
 
-    public int getPosX() {
+    protected float getPosX() {
         return posX;
     }
 
-    public void setPosX(int posX) {
+    protected void setPosX(float posX) {
         this.posX = posX;
     }
 
-    public int getPosY() {
+    protected float getPosY() {
         return posY;
     }
 
-    public void setPosY(int posY) {
+    protected void setPosY(float posY) {
         this.posY = posY;
     }
 
-    public Texture getTex() {
+    protected Texture getTex() {
         return tex;
     }
 
-    public void setTex(Texture tex) {
+    protected void setTex(Texture tex) {
         this.tex = tex;
     }
 
-    public String getType() {
+    protected String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    protected void setType(String type) {
         this.type = type;
     }
 
-    public int getEntityID() {
+    protected int getEntityID() {
         return entityID;
     }
 
-    public void setEntityID(int entityID) {
+    protected void setEntityID(int entityID) {
         this.entityID = entityID;
     }
 
-    public Rectangle getRec() {
+    protected Rectangle getRec() {
         return rec;
     }
 
-    public void setRec(Rectangle rec) {
+    protected void setRec(Rectangle rec) {
         this.rec = rec;
     }
 
-    public void renderEntity(SpriteBatch batch) {
+    protected void renderEntity(SpriteBatch batch) {
     }
 }

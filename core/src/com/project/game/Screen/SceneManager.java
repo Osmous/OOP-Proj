@@ -1,8 +1,9 @@
-package com.project.game;
+package com.project.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.project.game.GameEngine;
 import com.project.game.Screen.MainMenuScene;
 
 public class SceneManager {

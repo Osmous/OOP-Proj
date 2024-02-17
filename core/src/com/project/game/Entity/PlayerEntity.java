@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class PlayerEntity extends CharacterEntity{
-    public PlayerEntity(int entityID, int posX, int posY,String type, Texture tex, Rectangle rec) {
+    protected PlayerEntity(int entityID, float posX, float posY,String type, Texture tex, Rectangle rec) {
         super(entityID, posX, posY, type, tex, rec);
     }
 
     @Override
-    public void renderEntity(SpriteBatch batch) {
+    protected void renderEntity(SpriteBatch batch) {
         batch.draw(this.tex, this.posX,this.posY,this.rec.width,this.rec.height);
     }
 

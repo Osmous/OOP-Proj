@@ -1,4 +1,4 @@
-package com.project.game;
+package com.project.game.Entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -49,11 +49,20 @@ public class EntityManager {
         this.nextID++;
     }
 
-    public void updateEntity(String ops, float param1) {
+    public void updateEntity(String operation, int entityID, float params) {
         // todo
-
+        for (Entity entity : loadedEntities) {
+            if (entity.getEntityID() == entityID) {
+                switch (operation) {
+                    case ("moveX"):
+                        entity.setPosX(entity.getPosX() + params);
+                    case ("moveY"):
+                        entity.setPosY(entity.getPosY() + params);
+                }
+                return;
+            }
+        }
     }
-
     public void renderEntity(SpriteBatch batch){
         // todo
         batch.begin();
@@ -61,14 +70,14 @@ public class EntityManager {
             entity.renderEntity(batch);
             //this shd be placed into io manager/ control managers but here just for now
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && entity.getType().equals("player"))
-                entity.setPosX((int) (entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
+                entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && entity.getType().equals("player"))
-                entity.setPosX((int) (entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
+                entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
 
             if (Gdx.input.isKeyPressed(Input.Keys.UP) && entity.getType().equals("enemy"))
-                entity.setPosY((int) (entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
+                entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && entity.getType().equals("enemy"))
-                entity.setPosY((int) (entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
+                entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
         }
         batch.end();
     }
