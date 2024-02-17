@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class PlayerEntity extends CharacterEntity{
-    public PlayerEntity(int entityID, int posX, int posY,String type, Texture tex, Rectangle rec) {
-        super(entityID, posX, posY, type, tex, rec);
+    public PlayerEntity(int posX, int posY,String type, Texture tex, Rectangle rec) {
+        super(posX, posY, type, tex, rec);
     }
 
     @Override
