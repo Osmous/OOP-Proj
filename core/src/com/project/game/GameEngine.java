@@ -37,7 +37,8 @@ public class GameEngine extends Game {
 		loadConfig();
 
 		//set Main Screen as first Screen
-		sceneManager.setMainScreen();	};
+		sceneManager.setMainScreen();
+	};
 	@Override
 	public void render() {
 		// this render function basically is main event loop.
@@ -48,9 +49,6 @@ public class GameEngine extends Game {
 		//
 		// render scenes
 		sceneManager.render();
-
-		// Handle Collisions
-		collisionManager.handleCollisions(entityManager.getLoadedEntity());
 
 	};
 	@Override
