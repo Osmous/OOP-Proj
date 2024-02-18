@@ -109,6 +109,14 @@ public class EntityManager {
         return -1;
     }
 
+    public float getEntitySpeed(int ID){
+        for (Entity entity: this.loadedEntities){
+            if (entity.getEntityID() == ID){
+                return entity.getSpeed();
+            }
+        }
+    }
+
     public void clearAllEntities(){
         for(Entity entity: this.loadedEntities){
             entity.dispose();
