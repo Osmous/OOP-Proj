@@ -115,6 +115,7 @@ public class EntityManager {
                 return entity.getSpeed();
             }
         }
+        return 0;
     }
 
     public void clearAllEntities(){
