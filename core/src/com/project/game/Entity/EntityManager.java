@@ -28,23 +28,26 @@ public class EntityManager {
         // dk hard code one if statement for each type of entity? if yall got better idea how to do this pls go ahead
         // ideally just need something to determine what type of entity and and some format to pass the entity's parameters
         // into this fucntion
-        if (parameters.getString("type").equals("player")) {
-            Texture tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-            Rectangle rec = new Rectangle();
-            rec.height = tex.getHeight();
-            rec.width = tex.getWidth();
-            PlayerEntity player = new PlayerEntity(this.nextID, parameters.getInt("posX"), parameters.getInt("posY"), parameters.getString("type"), tex, rec);
-            this.loadedEntities.add((Entity) player);
-        }
-
-        if (parameters.getString("type").equals("enemy")) {
-            // place holder maybe enemy change stuffs abit idk
-            Texture tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-            Rectangle rec = new Rectangle();
-            rec.height = tex.getHeight();
-            rec.width = tex.getWidth();
-            EnemyEntity enemy = new EnemyEntity(this.nextID, parameters.getInt("posX"), parameters.getInt("posY"), parameters.getString("type"), tex, rec);
-            this.loadedEntities.add((Entity) enemy);
+        Texture tex;
+        Rectangle rec;
+        switch (parameters.getString("type")){
+            case ("player"):
+                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                rec = new Rectangle();
+                rec.height = tex.getHeight();
+                rec.width = tex.getWidth();
+                PlayerEntity player = new PlayerEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
+                this.loadedEntities.add((Entity) player);
+            case ("enemy"):
+                // place holder maybe enemy change stuffs abit idk
+                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                rec = new Rectangle();
+                rec.height = tex.getHeight();
+                rec.width = tex.getWidth();
+                EnemyEntity enemy = new EnemyEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
+                this.loadedEntities.add((Entity) enemy);
         }
         this.nextID++;
     }
@@ -104,6 +107,15 @@ public class EntityManager {
             }
         }
         return -1;
+    }
+
+    public float getEntitySpeed(int ID){
+        for (Entity entity: this.loadedEntities){
+            if (entity.getEntityID() == ID){
+                return entity.getSpeed();
+            }
+        }
+        return 0;
     }
 
     public void clearAllEntities(){

@@ -11,14 +11,16 @@ public abstract class Entity {
     protected String type;
     protected Texture tex;
     protected Rectangle rec;
+    protected float speed;
 
-    protected Entity(int entityID, float posX, float posY, String type, Texture tex, Rectangle rectangle) {
+    protected Entity(int entityID, float posX, float posY, String type, Texture tex, Rectangle rectangle, float speed) {
         this.entityID = entityID;
         this.posX = posX;
         this.posY = posY;
         this.type = type;
         this.tex = tex;
         this.rec = rectangle;
+        this.speed = speed;
     }
     protected void dispose(){
         this.tex.dispose();
@@ -73,5 +75,12 @@ public abstract class Entity {
     }
 
     protected void renderEntity(SpriteBatch batch) {
+    }
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }
