@@ -45,11 +45,11 @@ public class CollisionManager {
         // Print a message
         System.out.println("Collision detected between entity " + entity1.getEntityID() + " and entity " + entity2.getEntityID());
 
-        // Calculate the direction of the push
+        // Calculate the direction of the push ( Calculating the difference in x and y positions )
         float dx = entity2.getPosX() - entity1.getPosX();
         float dy = entity2.getPosY() - entity1.getPosY();
 
-        // Normalize the direction
+        // Normalize the direction (Calculate the length of this vector using pythagorean theorem)
         float length = (float) Math.sqrt(dx * dx + dy * dy);
         if (length != 0) { // Avoid division by zero
             dx /= length;
