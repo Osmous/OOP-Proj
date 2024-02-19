@@ -44,10 +44,24 @@ public class CollisionManager {
     private void handleCollision(Entity entity1, Entity entity2) {
         // Print a message
         System.out.println("Collision detected between entity " + entity1.getEntityID() + " and entity " + entity2.getEntityID());
-        entity1.setPosX(entity1.getPosX() - 2);
-        entity1.setPosY(entity1.getPosY() + 2);
-        entity2.setPosX(entity2.getPosX() + 2);
-        entity2.setPosY(entity2.getPosY() - 2);
+
+        // Calculate the direction of the push
+        float dx = entity2.getPosX() - entity1.getPosX();
+        float dy = entity2.getPosY() - entity1.getPosY();
+
+        // Normalize the direction
+        float length = (float) Math.sqrt(dx * dx + dy * dy);
+        if (length != 0) { // Avoid division by zero
+            dx /= length;
+            dy /= length;
+        }
+
+        // Apply the push to the entities
+        float pushStrength = 2.0f;
+        entity1.setPosX(entity1.getPosX() - dx * pushStrength);
+        entity1.setPosY(entity1.getPosY() - dy * pushStrength);
+        entity2.setPosX(entity2.getPosX() + dx * pushStrength);
+        entity2.setPosY(entity2.getPosY() + dy * pushStrength);
     }
 
 }
