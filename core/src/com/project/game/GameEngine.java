@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.project.game.Entity.CollisionManager;
+import com.project.game.Entity.EntityManager;
+import com.project.game.Screen.SceneManager;
 
 public class GameEngine extends Game {
 	private String gameConfigPath;
@@ -16,28 +19,30 @@ public class GameEngine extends Game {
 	public CollisionManager collisionManager;
 	public SimulationCycleManager simulationCycleManager;
 	public SceneManager sceneManager;
-	
-	 public void loadConfig(){
-		//load game specific configs.
-		 JsonReader json = new JsonReader();
-		 this.config = json.parse(Gdx.files.internal(this.gameConfigPath));
 
-	 }
+	public void loadConfig(){
+		//load game specific configs.
+		JsonReader json = new JsonReader();
+		this.config = json.parse(Gdx.files.internal(this.gameConfigPath));
+
+	}
 	@Override
 	public void create() {
 		// Init all managers
 		entityManager = new EntityManager();
 		aiControlManager = new AIControlManager();
-		playerControlManager = new PlayerControlManager();
-		ioManager = new IOManager();
-		collisionManager = new CollisionManager();
+		playerControlManager = new PlayerControlManager(this);
+		ioManager = new IOManager(this);
+		collisionManager = new CollisionManager(this);
 		simulationCycleManager = new SimulationCycleManager();
 		sceneManager = new SceneManager(this);
 		gameConfigPath = "config.json";
 		loadConfig();
 
 		//set Main Screen as first Screen
-		sceneManager.setMainScreen();	};
+		sceneManager.setMainScreen();
+
+	};
 	@Override
 	public void render() {
 		// this render function basically is main event loop.
@@ -49,8 +54,8 @@ public class GameEngine extends Game {
 		// render scenes
 		sceneManager.render();
 
-		// Handle Collisions
-		collisionManager.handleCollisions(entityManager.getLoadedEntity());
+		collisionManager.checkCollisions();
+
 
 	};
 	@Override
@@ -59,4 +64,8 @@ public class GameEngine extends Game {
 		if (screen != null) screen.hide();
 		entityManager.clearAllEntities();
 	};
+
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
 }
