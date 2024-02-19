@@ -42,7 +42,7 @@ public class SceneManager {
         this.currentScene = currentScene;
     }
 
-    public String getLevelScenePath(){
+    public String getLevelScenePath(){ 
 //        if(currentScene.equals("levelScene")){
 //            // this is a place holder for having multiple levels based on idk some condition. for now set to hard code level1.
 //            // add more level.json files and add them to the config.json path
