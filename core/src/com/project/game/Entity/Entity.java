@@ -41,7 +41,7 @@ public abstract class Entity {
         this.pos.y = posY;
     }
 
-    public Texture getTex() {
+    protected Texture getTex() {
         return tex;
     }
 

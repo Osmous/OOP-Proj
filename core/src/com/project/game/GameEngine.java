@@ -18,13 +18,13 @@ public class GameEngine extends Game {
 	public CollisionManager collisionManager;
 	public SimulationCycleManager simulationCycleManager;
 	public SceneManager sceneManager;
-	
-	 public void loadConfig(){
-		//load game specific configs.
-		 JsonReader json = new JsonReader();
-		 this.config = json.parse(Gdx.files.internal(this.gameConfigPath));
 
-	 }
+	public void loadConfig(){
+		//load game specific configs.
+		JsonReader json = new JsonReader();
+		this.config = json.parse(Gdx.files.internal(this.gameConfigPath));
+
+	}
 	@Override
 	public void create() {
 		// Init all managers
@@ -32,7 +32,7 @@ public class GameEngine extends Game {
 		aiControlManager = new AIControlManager();
 		playerControlManager = new PlayerControlManager(this);
 		ioManager = new IOManager(this);
-		collisionManager = new CollisionManager();
+		collisionManager = new CollisionManager(this);
 		simulationCycleManager = new SimulationCycleManager();
 		sceneManager = new SceneManager(this);
 		gameConfigPath = "config.json";
@@ -51,6 +51,8 @@ public class GameEngine extends Game {
 		//
 		// render scenes
 		sceneManager.render();
+		// Check Collision
+		collisionManager.checkCollisions();
 
 	};
 	@Override
@@ -59,4 +61,8 @@ public class GameEngine extends Game {
 		if (screen != null) screen.hide();
 		entityManager.clearAllEntities();
 	};
+
+	public EntityManager getEntityManager() {
+		return this.entityManager;
+	}
 }

@@ -72,16 +72,29 @@ public class EntityManager {
         batch.begin();
         for (Entity entity : this.loadedEntities) {
             entity.renderEntity(batch);
-            //this shd be placed into io manager/ control managers but here just for now
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && entity.getType().equals("player"))
-                entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && entity.getType().equals("player"))
-                entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
+            // Player movement
+            if (entity.getType().equals("player")) {
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+                    entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+                    entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
+                if (Gdx.input.isKeyPressed(Input.Keys.UP))
+                    entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
+                if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+                    entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
+            }
 
-            if (Gdx.input.isKeyPressed(Input.Keys.UP) && entity.getType().equals("enemy"))
-                entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && entity.getType().equals("enemy"))
-                entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
+            // Enemy movement
+            if (entity.getType().equals("enemy")) {
+                if (Gdx.input.isKeyPressed(Input.Keys.A))
+                    entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
+                if (Gdx.input.isKeyPressed(Input.Keys.D))
+                    entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
+                if (Gdx.input.isKeyPressed(Input.Keys.W))
+                    entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
+                if (Gdx.input.isKeyPressed(Input.Keys.S))
+                    entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
+            }
         }
         batch.end();
     }
