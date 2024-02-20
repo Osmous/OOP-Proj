@@ -29,7 +29,7 @@ public abstract class Entity {
         this.tex.dispose();
     }
 
-    protected float getPosX() {
+    public float getPosX() {
         return posX;
     }
 
@@ -37,7 +37,7 @@ public abstract class Entity {
         this.posX = posX;
     }
 
-    protected float getPosY() {
+    public float getPosY() {
         return posY;
     }
 
@@ -61,7 +61,7 @@ public abstract class Entity {
         this.type = type;
     }
 
-    protected int getEntityID() {
+    public int getEntityID() {
         return entityID;
     }
 
@@ -69,7 +69,7 @@ public abstract class Entity {
         this.entityID = entityID;
     }
 
-    protected Rectangle getRec() {
+    public Rectangle getRec() {
         return rec;
     }
 

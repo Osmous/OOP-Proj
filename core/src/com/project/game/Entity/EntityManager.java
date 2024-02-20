@@ -39,6 +39,7 @@ public class EntityManager {
                 PlayerEntity player = new PlayerEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
                         parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
                 this.loadedEntities.add((Entity) player);
+                break;
             case ("enemy"):
                 // place holder maybe enemy change stuffs abit idk
                 tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
@@ -48,6 +49,7 @@ public class EntityManager {
                 EnemyEntity enemy = new EnemyEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
                         parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
                 this.loadedEntities.add((Entity) enemy);
+                break;
         }
         this.nextID++;
     }
@@ -110,9 +112,11 @@ public class EntityManager {
         }
     }
 
+
     public List<Entity> getLoadedEntity() {
         return this.loadedEntities;
     }
+
     public int getPlayerEntityId(){
         for (Entity entity : this.loadedEntities) {
             if (entity.getType().equals("player")){

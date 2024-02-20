@@ -1,4 +1,4 @@
-package com.project.game.Entity;
+package com.project.game;
 
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.EntityManager;
@@ -56,12 +56,12 @@ public class CollisionManager {
             dy /= length;
         }
 
-        // Apply the push to the entities
+        // Apply the push to the entities' velocities
         float pushStrength = 2.0f;
-        entity1.setPosX(entity1.getPosX() - dx * pushStrength);
-        entity1.setPosY(entity1.getPosY() - dy * pushStrength);
-        entity2.setPosX(entity2.getPosX() + dx * pushStrength);
-        entity2.setPosY(entity2.getPosY() + dy * pushStrength);
+        entityManager.updateEntity("moveX", entity1.getEntityID(), -dx * pushStrength);
+        entityManager.updateEntity("moveY", entity1.getEntityID(), -dy * pushStrength);
+        entityManager.updateEntity("moveX", entity2.getEntityID(), dx * pushStrength);
+        entityManager.updateEntity("moveY", entity2.getEntityID(), dy * pushStrength);
     }
 
 }
