@@ -1,6 +1,8 @@
 package com.project.game;
 
+import com.badlogic.gdx.Gdx;
 import com.project.game.Entity.EnemyEntity;
+import com.project.game.Entity.Entity;
 import com.project.game.GameEngine;
 import com.badlogic.gdx.math.Vector2;
 
@@ -16,35 +18,39 @@ public class AIControlManager {
     }
 
     public void updateAI() {
-        for (EnemyEntity enemy : gameEngine.getEntityManager().getLoadedEntity()) {
-            generateEnemyMovement(enemy);
-            generateEnemyAction(enemy);
+        Vector2 playerPosition = gameEngine.entityManager.getPlayerPosition();
+        float delta = Gdx.graphics.getDeltaTime();
+        for (Entity entity : gameEngine.getEntityManager().getLoadedEntity()) {
+            if (entity.getType().equals("enemy")) {
+                generateEnemyMovement(entity,playerPosition,delta);
+            }
+//            generateEnemyAction(enemy);
         }
     }
 
-    private void generateEnemyMovement(EnemyEntity enemy) {
-        // Get player position
-        Vector2 playerPosition = gameEngine.getEntityManager().getPlayerPosition();
-
+    private void generateEnemyMovement(Entity enemy,Vector2 playerPosition, float delta) {
         // Calculate direction towards the player
-        Vector2 direction = new Vector2(playerPosition.x - enemy.getPosition().x, playerPosition.y - enemy.getPosition().y);
+        Vector2 direction = new Vector2(playerPosition.x - enemy.getPos().x, playerPosition.y - enemy.getPos().y);
         direction.nor(); // Normalize the direction vector
 
         // Adjust enemy position based on direction towards the player
         float enemySpeed = enemy.getSpeed();
-        float deltaX = direction.x * enemySpeed;
-        float deltaY = direction.y * enemySpeed;
+        float deltaX = direction.x * enemySpeed * delta;
+        float deltaY = direction.y * enemySpeed * delta;
 
         // Update enemy position
-        enemy.moveBy(deltaX, deltaY);
+//        enemy.moveBy(deltaX, deltaY);
+        gameEngine.entityManager.updateEntity("moveX", enemy.getEntityID(),deltaX );
+        gameEngine.entityManager.updateEntity("moveY", enemy.getEntityID(),deltaY );
     }
+
 
     private void generateEnemyAction(EnemyEntity enemy) {
         // Determine if the enemy should perform an attack action
-        boolean shouldAttack = random.nextBoolean(); // Randomly determine whether to attack or not
-        if (shouldAttack) {
-            // Perform attack action
-            gameEngine.attackPlayer(enemy);
-        }
+//        boolean shouldAttack = random.nextBoolean(); // Randomly determine whether to attack or not
+//        if (shouldAttack) {
+//            // Perform attack action
+//            gameEngine.attackPlayer(enemy);
+//        }
     }
 }

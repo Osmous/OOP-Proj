@@ -13,7 +13,14 @@
       "posX": 100,
       "posY": 100,
       "texturePath": "enemy.png",
-      "speed": 200
+      "speed": 100
+    },
+    {
+      "type": "enemy",
+      "posX": 300,
+      "posY": 100,
+      "texturePath": "enemy.png",
+      "speed": 100
     }
   ]
 }

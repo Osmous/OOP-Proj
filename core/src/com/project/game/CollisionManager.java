@@ -29,10 +29,10 @@ public class CollisionManager {
                 }
 
                 // Check for collision based on x and y coordinates
-                if (entity1.getPosX() < entity2.getPosX() + entity2.getRec().getWidth() &&
-                        entity1.getPosX() + entity1.getRec().getWidth() > entity2.getPosX() &&
-                        entity1.getPosY() < entity2.getPosY() + entity2.getRec().getHeight() &&
-                        entity1.getPosY() + entity1.getRec().getHeight() > entity2.getPosY()) {
+                if (entity1.getPos().x < entity2.getPos().x + entity2.getRec().getWidth() &&
+                        entity1.getPos().x + entity1.getRec().getWidth() > entity2.getPos().x &&
+                        entity1.getPos().y < entity2.getPos().y + entity2.getRec().getHeight() &&
+                        entity1.getPos().y + entity1.getRec().getHeight() > entity2.getPos().y) {
                     // Handle collision between entity1 and entity2
                     handleCollision(entity1, entity2);
                 }
@@ -46,8 +46,8 @@ public class CollisionManager {
         System.out.println("Collision detected between entity " + entity1.getEntityID() + " and entity " + entity2.getEntityID());
 
         // Calculate the direction of the push ( Calculating the difference in x and y positions )
-        float dx = entity2.getPosX() - entity1.getPosX();
-        float dy = entity2.getPosY() - entity1.getPosY();
+        float dx = entity2.getPos().x - entity1.getPos().x;
+        float dy = entity2.getPos().y - entity1.getPos().y;
 
         // Normalize the direction (Calculate the length of this vector using pythagorean theorem)
         float length = (float) Math.sqrt(dx * dx + dy * dy);
@@ -76,5 +76,5 @@ public class CollisionManager {
         // do this every frame or smth
         // this example ah but if u can think of a better way to do it go a head.
         // plan for a lot of entities in the entity list
-    }
-}
+//    }
+//}

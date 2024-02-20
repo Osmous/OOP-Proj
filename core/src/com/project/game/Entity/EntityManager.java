@@ -38,8 +38,9 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
                 this.loadedEntities.add((Entity) player);
+                break;
             case ("enemy"):
                 // place holder maybe enemy change stuffs abit idk
                 tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
@@ -47,8 +48,9 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
                 this.loadedEntities.add((Entity) enemy);
+                break;
         }
         this.nextID++;
     }
@@ -59,9 +61,11 @@ public class EntityManager {
             if (entity.getEntityID() == entityID) {
                 switch (operation) {
                     case ("moveX"):
-                        entity.setPosX(entity.getPosX() + params);
+                        entity.setPosX(entity.getPos().x + params);
+                        break;
                     case ("moveY"):
-                        entity.setPosY(entity.getPosY() + params);
+                        entity.setPosY(entity.getPos().y + params);
+                        break;
                 }
                 return;
             }
@@ -75,25 +79,25 @@ public class EntityManager {
             // Player movement
             if (entity.getType().equals("player")) {
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                    entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosX((entity.getPos().x - 200 * Gdx.graphics.getDeltaTime()));
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-                    entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosX((entity.getPos().x + 200 * Gdx.graphics.getDeltaTime()));
                 if (Gdx.input.isKeyPressed(Input.Keys.UP))
-                    entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosY((entity.getPos().y + 200 * Gdx.graphics.getDeltaTime()));
                 if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-                    entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosY((entity.getPos().y - 200 * Gdx.graphics.getDeltaTime()));
             }
 
             // Enemy movement
             if (entity.getType().equals("enemy")) {
                 if (Gdx.input.isKeyPressed(Input.Keys.A))
-                    entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosX((entity.getPos().x - 200 * Gdx.graphics.getDeltaTime()));
                 if (Gdx.input.isKeyPressed(Input.Keys.D))
-                    entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosX((entity.getPos().x + 200 * Gdx.graphics.getDeltaTime()));
                 if (Gdx.input.isKeyPressed(Input.Keys.W))
-                    entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosY((entity.getPos().y + 200 * Gdx.graphics.getDeltaTime()));
                 if (Gdx.input.isKeyPressed(Input.Keys.S))
-                    entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
+                    entity.setPosY((entity.getPos().y - 200 * Gdx.graphics.getDeltaTime()));
             }
         }
         batch.end();
@@ -121,6 +125,14 @@ public class EntityManager {
             }
         }
         return -1;
+    }
+    public Vector2 getPlayerPosition(){
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                return entity.getPos();
+            }
+        }
+        return null;
     }
 
     public float getEntitySpeed(int ID){

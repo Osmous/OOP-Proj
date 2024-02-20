@@ -24,23 +24,13 @@ public abstract class Entity {
     protected void dispose(){
         this.tex.dispose();
     }
-
-    public float getPosX() {
-        return pos.x;
-    }
-
-    protected void setPosX(float posX) {
+        protected void setPosX(float posX) {
         this.pos.x = posX;
-    }
-
-    public float getPosY() {
-        return pos.y;
     }
 
     protected void setPosY(float posY) {
         this.pos.y = posY;
     }
-
     protected Texture getTex() {
         return tex;
     }

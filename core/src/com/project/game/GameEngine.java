@@ -29,11 +29,11 @@ public class GameEngine extends Game {
 	public void create() {
 		// Init all managers
 		entityManager = new EntityManager();
-		aiControlManager = new AIControlManager();
+		aiControlManager = new AIControlManager(this);
 		playerControlManager = new PlayerControlManager(this);
 		ioManager = new IOManager(this);
 		collisionManager = new CollisionManager(this);
-		simulationCycleManager = new SimulationCycleManager();
+		simulationCycleManager = new SimulationCycleManager(this);
 		sceneManager = new SceneManager(this);
 		gameConfigPath = "config.json";
 		loadConfig();
