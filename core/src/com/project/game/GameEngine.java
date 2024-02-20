@@ -52,7 +52,7 @@ public class GameEngine extends Game {
 		//
 		// render scenes
 		sceneManager.render();
-
+		// Check Collision
 		collisionManager.checkCollisions();
 
 
