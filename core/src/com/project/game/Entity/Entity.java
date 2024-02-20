@@ -25,7 +25,7 @@ public abstract class Entity {
         this.tex.dispose();
     }
 
-    protected float getPosX() {
+    public float getPosX() {
         return pos.x;
     }
 
@@ -33,7 +33,7 @@ public abstract class Entity {
         this.pos.x = posX;
     }
 
-    protected float getPosY() {
+    public float getPosY() {
         return pos.y;
     }
 
@@ -41,7 +41,7 @@ public abstract class Entity {
         this.pos.y = posY;
     }
 
-    protected Texture getTex() {
+    public Texture getTex() {
         return tex;
     }
 
@@ -49,7 +49,7 @@ public abstract class Entity {
         this.tex = tex;
     }
 
-    protected String getType() {
+    public String getType() {
         return type;
     }
 
@@ -57,7 +57,7 @@ public abstract class Entity {
         this.type = type;
     }
 
-    protected int getEntityID() {
+    public int getEntityID() {
         return entityID;
     }
 
@@ -65,7 +65,7 @@ public abstract class Entity {
         this.entityID = entityID;
     }
 
-    protected Rectangle getRec() {
+    public Rectangle getRec() {
         return rec;
     }
 
@@ -79,7 +79,7 @@ public abstract class Entity {
         return speed;
     }
 
-    public void setSpeed(float speed) {
+    protected void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -87,7 +87,7 @@ public abstract class Entity {
         return pos;
     }
 
-    public void setPos(Vector2 pos) {
+    protected void setPos(Vector2 pos) {
         this.pos = pos;
     }
 }
