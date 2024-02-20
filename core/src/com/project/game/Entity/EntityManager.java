@@ -34,7 +34,7 @@ public class EntityManager {
                 rec.width = tex.getWidth();
                 PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
-                this.loadedEntities.add((Entity) player);
+                this.loadedEntities.add(player);
                 break;
             case ("enemy"):
                 // place holder maybe enemy change stuffs abit idk
@@ -44,7 +44,7 @@ public class EntityManager {
                 rec.width = tex.getWidth();
                 EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
-                this.loadedEntities.add((Entity) enemy);
+                this.loadedEntities.add(enemy);
                 break;
         }
         this.nextID++;
