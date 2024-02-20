@@ -25,7 +25,7 @@ public class CollisionManager {
             // Check for collision with screen boundaries
             if (entity1.getPosX() < 0) {
                 handleCollisionWithScreenBoundary(entity1, "left");
-            } else if (entity1.getPosX() + entity1.getRec().getWidth()  >= Gdx.graphics.getWidth()) {
+            } else if (entity1.getPosX() + entity1.getRec().getWidth()  > Gdx.graphics.getWidth()) {
                 handleCollisionWithScreenBoundary(entity1, "right");
             }
             if (entity1.getPosY() < 0) {
