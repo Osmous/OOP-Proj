@@ -1,5 +1,6 @@
 package com.project.game;
 
+import com.badlogic.gdx.Gdx;
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.EntityManager;
 import com.project.game.GameEngine;
@@ -19,8 +20,22 @@ public class CollisionManager {
     public void checkCollisions() {
         List<Entity> entities = entityManager.getLoadedEntity();
         for (int i = 0; i < entities.size(); i++) {
+            Entity entity1 = entities.get(i);
+
+            // Check for collision with screen boundaries
+            if (entity1.getPosX() < 0) {
+                handleCollisionWithScreenBoundary(entity1, "left");
+            } else if (entity1.getPosX() + entity1.getRec().getWidth()  >= Gdx.graphics.getWidth()) {
+                handleCollisionWithScreenBoundary(entity1, "right");
+            }
+            if (entity1.getPosY() < 0) {
+                handleCollisionWithScreenBoundary(entity1, "bottom");
+            } else if (entity1.getPosY() + entity1.getRec().getHeight() > Gdx.graphics.getHeight()) {
+                handleCollisionWithScreenBoundary(entity1, "top");
+            }
+
+            // Check for collision with other entities
             for (int j = i + 1; j < entities.size(); j++) {
-                Entity entity1 = entities.get(i);
                 Entity entity2 = entities.get(j);
 
                 // Skip if it's the same entity
@@ -63,7 +78,32 @@ public class CollisionManager {
         entityManager.updateEntity("moveX", entity2.getEntityID(), dx * pushStrength);
         entityManager.updateEntity("moveY", entity2.getEntityID(), dy * pushStrength);
     }
+    private void handleCollisionWithScreenBoundary(Entity entity, String boundary) {
+        // Print a message
+        System.out.println("Entity " + entity.getEntityID() + " hit the " + boundary + " boundary of the screen");
 
+        // Calculate the direction of the push
+        float dx = 0, dy = 0;
+        float pushStrength = 2.0f;
+        switch (boundary) {
+            case "left":
+                dx = pushStrength;
+                break;
+            case "right":
+                dx = -pushStrength;
+                break;
+            case "bottom":
+                dy = pushStrength;
+                break;
+            case "top":
+                dy = -pushStrength;
+                break;
+        }
+
+        // Apply the push to the entity's velocity
+        entityManager.updateEntity("moveX", entity.getEntityID(), dx);
+        entityManager.updateEntity("moveY", entity.getEntityID(), dy);
+    }
 }
 
 // every entity has a rectangle. look into checking if the rectangle overlaps with another rectangle
