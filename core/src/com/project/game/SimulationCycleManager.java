@@ -10,9 +10,9 @@ public class SimulationCycleManager {
     private GameEngine gameEngine;
 
     private enum GameState {
-        START,
+        IDLE,
         PAUSE,
-        RESUME,
+        RUNNING,
         END
     }
 
@@ -20,13 +20,13 @@ public class SimulationCycleManager {
 
     public SimulationCycleManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        this.currentState = GameState.START;
+        this.currentState = GameState.IDLE;
     }
 
     public void startGame() {
-        if (currentState == GameState.START) {
+        if (currentState == GameState.IDLE) {
             performStartGame();
-            currentState = GameState.RESUME;
+            currentState = GameState.RUNNING;
             System.out.println("Game started.");
         } else {
             System.out.println("Cannot start game. Game is already running or ended.");
@@ -34,7 +34,7 @@ public class SimulationCycleManager {
     }
 
     public void pauseGame() {
-        if (currentState == GameState.RESUME) {
+        if (currentState == GameState.RUNNING) {
             performPauseGame();
             currentState = GameState.PAUSE;
             System.out.println("Game paused.");
@@ -46,7 +46,7 @@ public class SimulationCycleManager {
     public void resumeGame() {
         if (currentState == GameState.PAUSE) {
             performResumeGame();
-            currentState = GameState.RESUME;
+            currentState = GameState.RUNNING;
             System.out.println("Game resumed.");
         } else {
             System.out.println("Cannot resume game. Game is not paused.");
@@ -61,6 +61,10 @@ public class SimulationCycleManager {
         } else {
             System.out.println("Cannot end game. Game is already ended.");
         }
+    }
+
+    public String getCurrentState() {
+        return String.valueOf(currentState);
     }
 
     private void performStartGame() {

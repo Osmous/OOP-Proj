@@ -1,72 +1,43 @@
 package com.project.game;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.InputAdapter;
+import com.project.game.Entity.Entity;
 
-public class IOManager implements InputProcessor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class IOManager extends InputAdapter {
     private GameEngine gameEngine;
-    private boolean isButtonPressed;
+    private List<String> keypressedlist;
 
     public IOManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        //Input.setInputProcessor(this);
-        this.isButtonPressed = false;
+        this.keypressedlist = new ArrayList<String>();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.LEFT) {
-            //gameEngine.playerControlManager.movePlayerLeft();
-        } else if (keycode == Input.Keys.RIGHT) {
-            //gameEngine.playerControlManager.movePlayerRight();
+//        if (keycode == Input.Keys.LEFT) {
+//            //gameEngine.playerControlManager.movePlayerLeft();
+//        } else if (keycode == Input.Keys.RIGHT) {
+//            //gameEngine.playerControlManager.movePlayerRight();
+//        }
+        if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
+            keypressedlist.add(Integer.toString(keycode));
+            System.out.println(keycode);
+        }
+        return true;
+    }
+    @Override
+    public boolean keyUp(int keycode){
+        if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
+            keypressedlist.remove(Integer.toString(keycode));
         }
         return true;
     }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return true;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return true;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (!isButtonPressed) {
-            isButtonPressed = true;
-            // Handle the click event here
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (isButtonPressed) {
-            isButtonPressed = false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return true;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return true;
+    public List<String> getKeypressedlist() {
+        return keypressedlist;
     }
 }

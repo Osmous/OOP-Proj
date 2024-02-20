@@ -6,6 +6,8 @@ import com.project.game.Entity.Entity;
 import com.project.game.GameEngine;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class AIControlManager {
@@ -40,8 +42,11 @@ public class AIControlManager {
 
         // Update enemy position
 //        enemy.moveBy(deltaX, deltaY);
-        gameEngine.entityManager.updateEntity("moveX", enemy.getEntityID(),deltaX );
-        gameEngine.entityManager.updateEntity("moveY", enemy.getEntityID(),deltaY );
+        Map<String, Object> data = new HashMap<>();
+        data.put("deltaMovement", deltaX);
+        gameEngine.entityManager.updateEntity("moveX", enemy.getEntityID(),data );
+        data.put("deltaMovement", deltaY);
+        gameEngine.entityManager.updateEntity("moveY", enemy.getEntityID(),data );
     }
 
 

@@ -35,6 +35,7 @@ public class GameEngine extends Game {
 		collisionManager = new CollisionManager(this);
 		simulationCycleManager = new SimulationCycleManager(this);
 		sceneManager = new SceneManager(this);
+		Gdx.input.setInputProcessor(ioManager);
 		gameConfigPath = "config.json";
 		loadConfig();
 
@@ -53,7 +54,9 @@ public class GameEngine extends Game {
 		sceneManager.render();
 		// Check Collision
 		collisionManager.checkCollisions();
-
+		if (!ioManager.getKeypressedlist().isEmpty()){
+			playerControlManager.handleInput(ioManager.getKeypressedlist());
+		}
 	};
 	@Override
 	public void dispose() {

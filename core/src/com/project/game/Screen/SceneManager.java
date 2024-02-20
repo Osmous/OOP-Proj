@@ -41,9 +41,16 @@ public class SceneManager {
 
     public void setCurrentScene(String currentScene) {
         this.currentScene = currentScene;
+        if (currentScene.equals("levelscene")){
+            this.gameEngine.simulationCycleManager.startGame();
+        }
     }
 
-    public String getLevelScenePath(){ 
+    public String getCurrentScene() {
+        return currentScene;
+    }
+
+    public String getLevelScenePath(){
 //        if(currentScene.equals("levelScene")){
 //            // this is a place holder for having multiple levels based on idk some condition. for now set to hard code level1.
 //            // add more level.json files and add them to the config.json path
