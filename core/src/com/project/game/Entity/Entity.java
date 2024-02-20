@@ -3,20 +3,19 @@ package com.project.game.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public abstract class Entity {
     protected int entityID;
-    protected float posX;
-    protected float posY;
+    protected Vector2 pos;
     protected String type;
     protected Texture tex;
     protected Rectangle rec;
     protected float speed;
 
-    protected Entity(int entityID, float posX, float posY, String type, Texture tex, Rectangle rectangle, float speed) {
+    protected Entity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed) {
         this.entityID = entityID;
-        this.posX = posX;
-        this.posY = posY;
+        this.pos = pos;
         this.type = type;
         this.tex = tex;
         this.rec = rectangle;
@@ -27,19 +26,19 @@ public abstract class Entity {
     }
 
     protected float getPosX() {
-        return posX;
+        return pos.x;
     }
 
     protected void setPosX(float posX) {
-        this.posX = posX;
+        this.pos.x = posX;
     }
 
     protected float getPosY() {
-        return posY;
+        return pos.y;
     }
 
     protected void setPosY(float posY) {
-        this.posY = posY;
+        this.pos.y = posY;
     }
 
     protected Texture getTex() {
@@ -82,5 +81,13 @@ public abstract class Entity {
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public Vector2 getPos() {
+        return pos;
+    }
+
+    public void setPos(Vector2 pos) {
+        this.pos = pos;
     }
 }

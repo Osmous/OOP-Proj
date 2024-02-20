@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.project.game.Entity.EnemyEntity;
 import com.project.game.Entity.Entity;
@@ -36,7 +37,7 @@ public class EntityManager {
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-                PlayerEntity player = new PlayerEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
+                PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
                 this.loadedEntities.add((Entity) player);
             case ("enemy"):
@@ -45,7 +46,7 @@ public class EntityManager {
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-                EnemyEntity enemy = new EnemyEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
+                EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
                 this.loadedEntities.add((Entity) enemy);
         }
