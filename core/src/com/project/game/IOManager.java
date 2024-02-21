@@ -62,23 +62,8 @@ public class IOManager extends InputAdapter {
         return true;
     }
 
-    @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return true;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
-        return true;
-    }
 }
+
+//Code has been tested on the integration branch and it works well. Please help me to copy it to the into
+//IOManager.java file within the integration branch. Thanks
