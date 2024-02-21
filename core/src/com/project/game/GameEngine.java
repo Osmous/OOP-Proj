@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.project.game.Entity.EntityManager;
 import com.project.game.Screen.SceneManager;
+import com.project.game.SimulationLifeCycle.SimulationCycleManager;
 
 public class GameEngine extends Game {
 	private String gameConfigPath;

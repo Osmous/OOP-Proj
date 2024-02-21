@@ -27,6 +27,9 @@ public class IOManager extends InputAdapter {
             keypressedlist.add(Integer.toString(keycode));
             System.out.println(keycode);
         }
+        if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
+            gameEngine.simulationCycleManager.pauseGame();
+        }
         return true;
     }
     @Override
@@ -34,10 +37,14 @@ public class IOManager extends InputAdapter {
         if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
             keypressedlist.remove(Integer.toString(keycode));
         }
+
         return true;
     }
 
     public List<String> getKeypressedlist() {
         return keypressedlist;
+    }
+    public void resetKeypressedList(){
+        this.keypressedlist= new ArrayList<String>();
     }
 }

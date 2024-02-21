@@ -158,4 +158,9 @@ public class EntityManager {
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID=0;
     }
+
+    public void setLoadedEntities(List<Entity> loadentity){
+        this.loadedEntities=loadentity;
+
+    }
 }
