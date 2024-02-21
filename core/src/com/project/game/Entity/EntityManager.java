@@ -20,10 +20,6 @@ public class EntityManager {
     }
 
     public void createEntity(JsonValue parameters) {
-        // Todo
-        // dk hard code one if statement for each type of entity? if yall got better idea how to do this pls go ahead
-        // ideally just need something to determine what type of entity and and some format to pass the entity's parameters
-        // into this fucntion
         Texture tex;
         Rectangle rec;
         switch (parameters.getString("type")){
@@ -37,7 +33,6 @@ public class EntityManager {
                 this.loadedEntities.add(player);
                 break;
             case ("enemy"):
-                // place holder maybe enemy change stuffs abit idk
                 tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
@@ -51,7 +46,6 @@ public class EntityManager {
     }
 
     public void updateEntity(String operation, int entityID, Map<String, Object> params) {
-        // todo
         for (Entity entity : loadedEntities) {
             if (entity.getEntityID() == entityID) {
                 switch (operation) {
@@ -79,33 +73,9 @@ public class EntityManager {
         }
     }
     public void renderEntity(SpriteBatch batch){
-        // todo
         batch.begin();
         for (Entity entity : this.loadedEntities) {
             entity.renderEntity(batch);
-            // Player movement
-//            if (entity.getType().equals("player")) {
-//                if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-//                    entity.setPosX((entity.getPos().x - 200 * Gdx.graphics.getDeltaTime()));
-//                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-//                    entity.setPosX((entity.getPos().x + 200 * Gdx.graphics.getDeltaTime()));
-//                if (Gdx.input.isKeyPressed(Input.Keys.UP))
-//                    entity.setPosY((entity.getPos().y + 200 * Gdx.graphics.getDeltaTime()));
-//                if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-//                    entity.setPosY((entity.getPos().y - 200 * Gdx.graphics.getDeltaTime()));
-//            }
-
-            // Enemy movement
-//            if (entity.getType().equals("enemy")) {
-//                if (Gdx.input.isKeyPressed(Input.Keys.A))
-//                    entity.setPosX((entity.getPos().x - 200 * Gdx.graphics.getDeltaTime()));
-//                if (Gdx.input.isKeyPressed(Input.Keys.D))
-//                    entity.setPosX((entity.getPos().x + 200 * Gdx.graphics.getDeltaTime()));
-//                if (Gdx.input.isKeyPressed(Input.Keys.W))
-//                    entity.setPosY((entity.getPos().y + 200 * Gdx.graphics.getDeltaTime()));
-//                if (Gdx.input.isKeyPressed(Input.Keys.S))
-//                    entity.setPosY((entity.getPos().y - 200 * Gdx.graphics.getDeltaTime()));
-//            }
         }
         batch.end();
     }

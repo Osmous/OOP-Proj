@@ -18,7 +18,7 @@ public class CollisionManager {
 
     public CollisionManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        this.entityManager = gameEngine.getEntityManager();
+        this.entityManager = gameEngine.entityManager;
     }
 
     public void checkCollisions() {

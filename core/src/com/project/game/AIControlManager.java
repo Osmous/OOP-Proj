@@ -22,7 +22,7 @@ public class AIControlManager {
     public void updateAI() {
         Vector2 playerPosition = gameEngine.entityManager.getPlayerPosition();
         float delta = Gdx.graphics.getDeltaTime();
-        for (Entity entity : gameEngine.getEntityManager().getLoadedEntity()) {
+        for (Entity entity : gameEngine.entityManager.getLoadedEntity()) {
             if (entity.getType().equals("enemy")) {
                 generateEnemyMovement(entity,playerPosition,delta);
             }
