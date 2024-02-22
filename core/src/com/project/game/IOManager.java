@@ -45,6 +45,10 @@ public class IOManager extends InputAdapter {
         return keypressedlist; // Return the key pressed list
     }
 
+    public void resetKeypressedList() {
+        keypressedlist.clear(); // Clear the key pressed list
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (!isButtonPressed) {
@@ -61,9 +65,4 @@ public class IOManager extends InputAdapter {
         }
         return true;
     }
-
-
 }
-
-//Code has been tested on the integration branch and it works well. Please help me to copy it to the into
-//IOManager.java file within the integration branch. Thanks
