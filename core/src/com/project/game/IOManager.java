@@ -10,10 +10,14 @@ import java.util.List;
 public class IOManager extends InputAdapter {
     private GameEngine gameEngine;
     private List<String> keypressedlist;
+    private boolean isButtonPressed;
+
 
     public IOManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
         this.keypressedlist = new ArrayList<String>();
+        this.isButtonPressed = false;
+
     }
 
     @Override
@@ -46,5 +50,21 @@ public class IOManager extends InputAdapter {
     }
     public void resetKeypressedList(){
         this.keypressedlist= new ArrayList<String>();
+    }
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (!isButtonPressed) {
+            isButtonPressed = true; // Set the button pressed flag to true
+            // Handle the click event here
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (isButtonPressed) {
+            isButtonPressed = false; // Set the button pressed flag to false
+        }
+        return true;
     }
 }
