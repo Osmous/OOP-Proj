@@ -82,7 +82,7 @@ public class EntityManager {
 
     public void deleteEntity(int entityID) {
         // todo
-//        loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
+       // loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
 
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();

@@ -30,11 +30,11 @@ public abstract class Entity {
     protected void dispose(){
         this.tex.dispose();
     }
-        protected void setPosX(float posX) {
+        public void setPosX(float posX) {
         this.pos.x = posX;
     }
 
-    protected void setPosY(float posY) {
+    public void setPosY(float posY) {
         this.pos.y = posY;
     }
     protected Texture getTex() {
@@ -75,7 +75,7 @@ public abstract class Entity {
         return speed;
     }
 
-    protected void setSpeed(float speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
