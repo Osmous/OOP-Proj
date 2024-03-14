@@ -1,42 +1,60 @@
 package com.project.game;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.InputAdapter;
+import com.project.game.Entity.Entity;
 
-public class IOManager implements InputProcessor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class IOManager extends InputAdapter {
     private GameEngine gameEngine;
+    private List<String> keypressedlist;
     private boolean isButtonPressed;
+
 
     public IOManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        //Input.setInputProcessor(this);
+        this.keypressedlist = new ArrayList<String>();
         this.isButtonPressed = false;
+
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.LEFT) {
-            //gameEngine.playerControlManager.movePlayerLeft();
-        } else if (keycode == Input.Keys.RIGHT) {
-            //gameEngine.playerControlManager.movePlayerRight();
+//        if (keycode == Input.Keys.LEFT) {
+//            //gameEngine.playerControlManager.movePlayerLeft();
+//        } else if (keycode == Input.Keys.RIGHT) {
+//            //gameEngine.playerControlManager.movePlayerRight();
+//        }
+        if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
+            keypressedlist.add(Integer.toString(keycode));
+            System.out.println(keycode);
+        }
+        if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
+            gameEngine.simulationCycleManager.pauseGame();
         }
         return true;
     }
-
     @Override
-    public boolean keyUp(int keycode) {
+    public boolean keyUp(int keycode){
+        if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
+            keypressedlist.remove(Integer.toString(keycode));
+        }
+
         return true;
     }
 
-    @Override
-    public boolean keyTyped(char character) {
-        return true;
+    public List<String> getKeypressedlist() {
+        return keypressedlist;
     }
-
+    public void resetKeypressedList(){
+        this.keypressedlist= new ArrayList<String>();
+    }
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (!isButtonPressed) {
-            isButtonPressed = true;
+            isButtonPressed = true; // Set the button pressed flag to true
             // Handle the click event here
         }
         return true;
@@ -45,28 +63,8 @@ public class IOManager implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (isButtonPressed) {
-            isButtonPressed = false;
+            isButtonPressed = false; // Set the button pressed flag to false
         }
-        return true;
-    }
-
-    @Override
-    public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return true;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(float amountX, float amountY) {
         return true;
     }
 }

@@ -3,48 +3,40 @@ package com.project.game.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
-import java.nio.channels.FileLock;
+import java.lang.reflect.Array;
+
 
 public abstract class Entity {
     protected int entityID;
-    protected float posX;
-    protected float posY;
+    protected Vector2 pos;
     protected String type;
     protected Texture tex;
     protected Rectangle rec;
     protected float speed;
-
-
-    protected Entity(int entityID, float posX, float posY, String type, Texture tex, Rectangle rectangle, float speed) {
+    protected boolean[] blockedMovement;
+    protected Entity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed) {
         this.entityID = entityID;
-        this.posX = posX;
-        this.posY = posY;
+        this.pos = pos;
         this.type = type;
         this.tex = tex;
         this.rec = rectangle;
         this.speed = speed;
+        // check variable for if for any reason cannot move in the any of the 4 directions
+        // left, top , right , bottom
+        this.blockedMovement = new boolean[4];
     }
     protected void dispose(){
         this.tex.dispose();
     }
-
-    public float getPosX() {
-        return posX;
-    }
-
-    protected void setPosX(float posX) {
-        this.posX = posX;
-    }
-
-    public float getPosY() {
-        return posY;
+        protected void setPosX(float posX) {
+        this.pos.x = posX;
     }
 
     protected void setPosY(float posY) {
-        this.posY = posY;
+        this.pos.y = posY;
     }
-
     protected Texture getTex() {
         return tex;
     }
@@ -53,7 +45,7 @@ public abstract class Entity {
         this.tex = tex;
     }
 
-    protected String getType() {
+    public String getType() {
         return type;
     }
 
@@ -83,7 +75,23 @@ public abstract class Entity {
         return speed;
     }
 
-    public void setSpeed(float speed) {
+    protected void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public Vector2 getPos() {
+        return pos;
+    }
+
+    protected void setPos(Vector2 pos) {
+        this.pos = pos;
+    }
+
+    public boolean[] getBlockedMovement() {
+        return blockedMovement;
+    }
+
+    protected void setBlockedMovement(int index, boolean s) {
+        this.blockedMovement[index] = s;
     }
 }

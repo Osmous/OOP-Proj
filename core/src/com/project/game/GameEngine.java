@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.project.game.Entity.EntityManager;
 import com.project.game.Screen.SceneManager;
+import com.project.game.SimulationLifeCycle.SimulationCycleManager;
 
 public class GameEngine extends Game {
 	private String gameConfigPath;
@@ -29,42 +30,33 @@ public class GameEngine extends Game {
 	public void create() {
 		// Init all managers
 		entityManager = new EntityManager();
-		aiControlManager = new AIControlManager();
+		aiControlManager = new AIControlManager(this);
 		playerControlManager = new PlayerControlManager(this);
 		ioManager = new IOManager(this);
 		collisionManager = new CollisionManager(this);
-		simulationCycleManager = new SimulationCycleManager();
+		simulationCycleManager = new SimulationCycleManager(this);
 		sceneManager = new SceneManager(this);
+		Gdx.input.setInputProcessor(ioManager);
 		gameConfigPath = "config.json";
 		loadConfig();
 
 		//set Main Screen as first Screen
 		sceneManager.setMainScreen();
-
 	};
 	@Override
 	public void render() {
-		// this render function basically is main event loop.
-		// techincally can just dump the io/player control function calls for movement here but
-		// look into event based listeners and update xy position in the player control manager itself.
-		// iomanager shd be using event listeners. not the if statements ah
-		// https://libgdx.com/wiki/input/event-handling
-		//
 		// render scenes
 		sceneManager.render();
 		// Check Collision
 		collisionManager.checkCollisions();
-
-
+		if (!ioManager.getKeypressedlist().isEmpty()){
+			playerControlManager.handleInput(ioManager.getKeypressedlist());
+		}
 	};
 	@Override
 	public void dispose() {
-		// TODO
 		if (screen != null) screen.hide();
 		entityManager.clearAllEntities();
 	};
 
-	public EntityManager getEntityManager() {
-		return this.entityManager;
-	}
 }

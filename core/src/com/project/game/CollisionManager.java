@@ -1,11 +1,15 @@
 package com.project.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.EntityManager;
 import com.project.game.GameEngine;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CollisionManager {
 
@@ -14,7 +18,7 @@ public class CollisionManager {
 
     public CollisionManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        this.entityManager = gameEngine.getEntityManager();
+        this.entityManager = gameEngine.entityManager;
     }
 
     public void checkCollisions() {
@@ -23,14 +27,18 @@ public class CollisionManager {
             Entity entity1 = entities.get(i);
 
             // Check for collision with screen boundaries
-            if (entity1.getPosX() < 0) {
+            if (entity1.getPos().x < 0) {
                 handleCollisionWithScreenBoundary(entity1, "left");
+<<<<<<< HEAD
             } else if (entity1.getPosX() + entity1.getRec().getWidth()  > Gdx.graphics.getWidth()) {
+=======
+            } else if (entity1.getPos().x + entity1.getRec().getWidth()  >= Gdx.graphics.getWidth()) {
+>>>>>>> main
                 handleCollisionWithScreenBoundary(entity1, "right");
             }
-            if (entity1.getPosY() < 0) {
+            if (entity1.getPos().y < 0) {
                 handleCollisionWithScreenBoundary(entity1, "bottom");
-            } else if (entity1.getPosY() + entity1.getRec().getHeight() > Gdx.graphics.getHeight()) {
+            } else if (entity1.getPos().y + entity1.getRec().getHeight() > Gdx.graphics.getHeight()) {
                 handleCollisionWithScreenBoundary(entity1, "top");
             }
 
@@ -44,10 +52,10 @@ public class CollisionManager {
                 }
 
                 // Check for collision based on x and y coordinates
-                if (entity1.getPosX() < entity2.getPosX() + entity2.getRec().getWidth() &&
-                        entity1.getPosX() + entity1.getRec().getWidth() > entity2.getPosX() &&
-                        entity1.getPosY() < entity2.getPosY() + entity2.getRec().getHeight() &&
-                        entity1.getPosY() + entity1.getRec().getHeight() > entity2.getPosY()) {
+                if (entity1.getPos().x < entity2.getPos().x + entity2.getRec().getWidth() &&
+                        entity1.getPos().x + entity1.getRec().getWidth() > entity2.getPos().x &&
+                        entity1.getPos().y < entity2.getPos().y + entity2.getRec().getHeight() &&
+                        entity1.getPos().y + entity1.getRec().getHeight() > entity2.getPos().y) {
                     // Handle collision between entity1 and entity2
                     handleCollision(entity1, entity2);
                 }
@@ -61,8 +69,8 @@ public class CollisionManager {
         System.out.println("Collision detected between entity " + entity1.getEntityID() + " and entity " + entity2.getEntityID());
 
         // Calculate the direction of the push ( Calculating the difference in x and y positions )
-        float dx = entity2.getPosX() - entity1.getPosX();
-        float dy = entity2.getPosY() - entity1.getPosY();
+        float dx = entity2.getPos().x - entity1.getPos().x;
+        float dy = entity2.getPos().y - entity1.getPos().y;
 
         // Normalize the direction (Calculate the length of this vector using pythagorean theorem)
         float length = (float) Math.sqrt(dx * dx + dy * dy);
@@ -73,10 +81,16 @@ public class CollisionManager {
 
         // Apply the push to the entities' velocities
         float pushStrength = 2.0f;
-        entityManager.updateEntity("moveX", entity1.getEntityID(), -dx * pushStrength);
-        entityManager.updateEntity("moveY", entity1.getEntityID(), -dy * pushStrength);
-        entityManager.updateEntity("moveX", entity2.getEntityID(), dx * pushStrength);
-        entityManager.updateEntity("moveY", entity2.getEntityID(), dy * pushStrength);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("deltaMovement", (-dx * pushStrength));
+        entityManager.updateEntity("moveX", entity1.getEntityID(), data);
+        data.put("deltaMovement", (-dy * pushStrength));
+        entityManager.updateEntity("moveY", entity1.getEntityID(), data);
+        data.put("deltaMovement", (dx * pushStrength));
+        entityManager.updateEntity("moveX", entity2.getEntityID(), data);
+        data.put("deltaMovement", (dy * pushStrength));
+        entityManager.updateEntity("moveY", entity2.getEntityID(), data);
     }
     private void handleCollisionWithScreenBoundary(Entity entity, String boundary) {
         // Print a message
@@ -85,24 +99,30 @@ public class CollisionManager {
         // Calculate the direction of the push
         float dx = 0, dy = 0;
         float pushStrength = 2.0f;
+        Map<String, Object> data = new HashMap<>();
         switch (boundary) {
             case "left":
-                dx = pushStrength;
+                data.put("id", 0);
                 break;
             case "right":
-                dx = -pushStrength;
+                data.put("id", 2);
                 break;
             case "bottom":
-                dy = pushStrength;
+                data.put("id", 3);
                 break;
             case "top":
-                dy = -pushStrength;
+                data.put("id", 1);
                 break;
         }
+        data.put("state", true);
+        entityManager.updateEntity("setBlockedMovement", entity.getEntityID(), data);
 
-        // Apply the push to the entity's velocity
-        entityManager.updateEntity("moveX", entity.getEntityID(), dx);
-        entityManager.updateEntity("moveY", entity.getEntityID(), dy);
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("deltaMovement", dx);
+//        // Apply the push to the entity's velocity
+//        entityManager.updateEntity("moveX", entity.getEntityID(), data);
+//        data.put("deltaMovement", dy);
+//        entityManager.updateEntity("moveY", entity.getEntityID(), data);
     }
 }
 
@@ -116,6 +136,5 @@ public class CollisionManager {
         // do this every frame or smth
         // this example ah but if u can think of a better way to do it go a head.
         // plan for a lot of entities in the entity list
-
-
-
+//    }
+//}

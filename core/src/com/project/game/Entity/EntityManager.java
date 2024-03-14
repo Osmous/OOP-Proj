@@ -4,15 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
-import com.project.game.Entity.EnemyEntity;
-import com.project.game.Entity.Entity;
-import com.project.game.Entity.PlayerEntity;
 import com.badlogic.gdx.math.Rectangle;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class EntityManager {
     private List<Entity> loadedEntities;
@@ -24,10 +20,6 @@ public class EntityManager {
     }
 
     public void createEntity(JsonValue parameters) {
-        // Todo
-        // dk hard code one if statement for each type of entity? if yall got better idea how to do this pls go ahead
-        // ideally just need something to determine what type of entity and and some format to pass the entity's parameters
-        // into this fucntion
         Texture tex;
         Rectangle rec;
         switch (parameters.getString("type")){
@@ -36,66 +28,54 @@ public class EntityManager {
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-                PlayerEntity player = new PlayerEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
-                this.loadedEntities.add((Entity) player);
+                PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                this.loadedEntities.add(player);
                 break;
             case ("enemy"):
-                // place holder maybe enemy change stuffs abit idk
                 tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-                EnemyEntity enemy = new EnemyEntity(this.nextID, parameters.getFloat("posX"), parameters.getFloat("posY"),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("posX"));
-                this.loadedEntities.add((Entity) enemy);
+                EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                this.loadedEntities.add(enemy);
                 break;
         }
         this.nextID++;
     }
 
-    public void updateEntity(String operation, int entityID, float params) {
-        // todo
+    public void updateEntity(String operation, int entityID, Map<String, Object> params) {
         for (Entity entity : loadedEntities) {
             if (entity.getEntityID() == entityID) {
                 switch (operation) {
                     case ("moveX"):
-                        entity.setPosX(entity.getPosX() + params);
+                        if (!(entity.getBlockedMovement()[0] && (float) params.get("deltaMovement")<0 || entity.getBlockedMovement()[2] && (float) params.get("deltaMovement")>0)){
+                            entity.setPosX(entity.getPos().x + (float) params.get("deltaMovement"));
+                            entity.setBlockedMovement(0, false);
+                            entity.setBlockedMovement(2, false);
+                        }
+                        break;
                     case ("moveY"):
-                        entity.setPosY(entity.getPosY() + params);
+                        if (!(entity.getBlockedMovement()[3] && (float) params.get("deltaMovement")<0 || entity.getBlockedMovement()[1] && (float) params.get("deltaMovement")>0)){
+                            entity.setPosY(entity.getPos().y + (float)params.get("deltaMovement"));
+                            entity.setBlockedMovement(3, false);
+                            entity.setBlockedMovement(1, false);
+                        }
+                        break;
+                    case ("setBlockedMovement"):
+                        entity.setBlockedMovement((int) params.get("id"), (boolean) params.get("state"));
+                        break;
+
                 }
                 return;
             }
         }
     }
     public void renderEntity(SpriteBatch batch){
-        // todo
         batch.begin();
         for (Entity entity : this.loadedEntities) {
             entity.renderEntity(batch);
-            // Player movement
-            if (entity.getType().equals("player")) {
-                if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
-                    entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
-                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-                    entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
-                if (Gdx.input.isKeyPressed(Input.Keys.UP))
-                    entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
-                if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-                    entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
-            }
-
-            // Enemy movement
-            if (entity.getType().equals("enemy")) {
-                if (Gdx.input.isKeyPressed(Input.Keys.A))
-                    entity.setPosX((entity.getPosX() - 200 * Gdx.graphics.getDeltaTime()));
-                if (Gdx.input.isKeyPressed(Input.Keys.D))
-                    entity.setPosX((entity.getPosX() + 200 * Gdx.graphics.getDeltaTime()));
-                if (Gdx.input.isKeyPressed(Input.Keys.W))
-                    entity.setPosY((entity.getPosY() + 200 * Gdx.graphics.getDeltaTime()));
-                if (Gdx.input.isKeyPressed(Input.Keys.S))
-                    entity.setPosY((entity.getPosY() - 200 * Gdx.graphics.getDeltaTime()));
-            }
         }
         batch.end();
     }
@@ -112,11 +92,9 @@ public class EntityManager {
         }
     }
 
-
     public List<Entity> getLoadedEntity() {
         return this.loadedEntities;
     }
-
     public int getPlayerEntityId(){
         for (Entity entity : this.loadedEntities) {
             if (entity.getType().equals("player")){
@@ -124,6 +102,14 @@ public class EntityManager {
             }
         }
         return -1;
+    }
+    public Vector2 getPlayerPosition(){
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                return entity.getPos();
+            }
+        }
+        return null;
     }
 
     public float getEntitySpeed(int ID){
@@ -141,5 +127,10 @@ public class EntityManager {
         }
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID=0;
+    }
+
+    public void setLoadedEntities(List<Entity> loadentity){
+        this.loadedEntities=loadentity;
+
     }
 }

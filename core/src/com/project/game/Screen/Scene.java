@@ -18,7 +18,7 @@ public class Scene implements com.badlogic.gdx.Screen {
         this.font = font;
 
         this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, 640, 480);
+        this.camera.setToOrtho(false, 1280, 720);
     }
 
     @Override
