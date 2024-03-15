@@ -2,21 +2,22 @@ package com.project.game;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.Gdx;
 import com.project.game.Entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class IOManager extends InputAdapter {
-    private GameEngine gameEngine; // Reference to the game engine
-    private List<String> keypressedlist; // List to store the pressed keys
-    private boolean isButtonPressed; // Flag to track if a button is pressed
+    private GameEngine gameEngine;
+    private List<String> keypressedlist;
+    private boolean isButtonPressed;
+
 
     public IOManager(GameEngine gameEngine) {
-        this.gameEngine = gameEngine; // Initialize the game engine
-        this.keypressedlist = new ArrayList<String>(); // Initialize the key pressed list
-        this.isButtonPressed = false; // Initialize the button pressed flag
+        this.gameEngine = gameEngine;
+        this.keypressedlist = new ArrayList<String>();
+        this.isButtonPressed = false;
+
     }
 
     @Override
@@ -30,25 +31,26 @@ public class IOManager extends InputAdapter {
             keypressedlist.add(Integer.toString(keycode));
             System.out.println(keycode);
         }
+        if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
+            gameEngine.simulationCycleManager.pauseGame();
+        }
         return true;
     }
-
     @Override
     public boolean keyUp(int keycode){
         if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
-            keypressedlist.remove(Integer.toString(keycode)); // Remove the released key from the list
+            keypressedlist.remove(Integer.toString(keycode));
         }
+
         return true;
     }
 
     public List<String> getKeypressedlist() {
-        return keypressedlist; // Return the key pressed list
+        return keypressedlist;
     }
-
-    public void resetKeypressedList() {
-        keypressedlist.clear(); // Clear the key pressed list
+    public void resetKeypressedList(){
+        this.keypressedlist= new ArrayList<String>();
     }
-
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (!isButtonPressed) {

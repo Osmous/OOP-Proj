@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.project.game.GameEngine;
 
-public class MainMenuScene extends Scene {
-    public MainMenuScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
+public class PauseScene extends Scene{
+
+    public PauseScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
         super(gameEngine, batch, font);
     }
 
@@ -20,7 +21,7 @@ public class MainMenuScene extends Scene {
 
         // render all stuffs here as required
         batch.begin();
-        font.draw(batch, "Screen 1 ", 100, 150);
+        font.draw(batch, "Pause Scene ", 100, 150);
         batch.end();
 
         // this for changing screens
@@ -28,10 +29,10 @@ public class MainMenuScene extends Scene {
         // here temporarily. currently set to on mouse 1 down. need to change to buttons i guess. find someway to detect
         // only single button press (coz on button down is like holding m1 continuosly) maybe find someway to implement a
         // on button up stroke or smth idk
-        if (Gdx.input.isTouched()) {
-            gameEngine.sceneManager.setCurrentScene("levelscene");
-            gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath()));
-            dispose();
-        }
+//        if (Gdx.input.isTouched()) {
+//            gameEngine.sceneManager.setCurrentScene("levelscene");
+//            gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath()));
+//            dispose();
+//        }
     }
 }

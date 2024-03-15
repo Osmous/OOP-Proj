@@ -1,0 +1,136 @@
+package com.project.game.Entity;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.math.Rectangle;
+
+import java.util.*;
+
+public class EntityManager {
+    private List<Entity> loadedEntities;
+    private int nextID;
+
+    public EntityManager() {
+        this.loadedEntities = new ArrayList<Entity>();
+        this.nextID = 0;
+    }
+
+    public void createEntity(JsonValue parameters) {
+        Texture tex;
+        Rectangle rec;
+        switch (parameters.getString("type")){
+            case ("player"):
+                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                rec = new Rectangle();
+                rec.height = tex.getHeight();
+                rec.width = tex.getWidth();
+                PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                this.loadedEntities.add(player);
+                break;
+            case ("enemy"):
+                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                rec = new Rectangle();
+                rec.height = tex.getHeight();
+                rec.width = tex.getWidth();
+                EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                this.loadedEntities.add(enemy);
+                break;
+        }
+        this.nextID++;
+    }
+
+    public void updateEntity(String operation, int entityID, Map<String, Object> params) {
+        for (Entity entity : loadedEntities) {
+            if (entity.getEntityID() == entityID) {
+                switch (operation) {
+                    case ("moveX"):
+                        if (!(entity.getBlockedMovement()[0] && (float) params.get("deltaMovement")<0 || entity.getBlockedMovement()[2] && (float) params.get("deltaMovement")>0)){
+                            entity.setPosX(entity.getPos().x + (float) params.get("deltaMovement"));
+                            entity.setBlockedMovement(0, false);
+                            entity.setBlockedMovement(2, false);
+                        }
+                        break;
+                    case ("moveY"):
+                        if (!(entity.getBlockedMovement()[3] && (float) params.get("deltaMovement")<0 || entity.getBlockedMovement()[1] && (float) params.get("deltaMovement")>0)){
+                            entity.setPosY(entity.getPos().y + (float)params.get("deltaMovement"));
+                            entity.setBlockedMovement(3, false);
+                            entity.setBlockedMovement(1, false);
+                        }
+                        break;
+                    case ("setBlockedMovement"):
+                        entity.setBlockedMovement((int) params.get("id"), (boolean) params.get("state"));
+                        break;
+
+                }
+                return;
+            }
+        }
+    }
+    public void renderEntity(SpriteBatch batch){
+        batch.begin();
+        for (Entity entity : this.loadedEntities) {
+            entity.renderEntity(batch);
+        }
+        batch.end();
+    }
+
+    public void deleteEntity(int entityID) {
+        // todo
+//        loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
+
+        for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
+            Entity entity = iter.next();
+            if (entity.getEntityID() == entityID) {
+                iter.remove();
+            }
+        }
+    }
+
+    public List<Entity> getLoadedEntity() {
+        return this.loadedEntities;
+    }
+    public int getPlayerEntityId(){
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                return entity.getEntityID();
+            }
+        }
+        return -1;
+    }
+    public Vector2 getPlayerPosition(){
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                return entity.getPos();
+            }
+        }
+        return null;
+    }
+
+    public float getEntitySpeed(int ID){
+        for (Entity entity: this.loadedEntities){
+            if (entity.getEntityID() == ID){
+                return entity.getSpeed();
+            }
+        }
+        return 0;
+    }
+
+    public void clearAllEntities(){
+        for(Entity entity: this.loadedEntities){
+            entity.dispose();
+        }
+        this.loadedEntities = new ArrayList<Entity>();
+        this.nextID=0;
+    }
+
+    public void setLoadedEntities(List<Entity> loadentity){
+        this.loadedEntities=loadentity;
+
+    }
+}

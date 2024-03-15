@@ -12,13 +12,13 @@ public class Scene implements com.badlogic.gdx.Screen {
     protected SpriteBatch batch;
     protected BitmapFont font;
 
-    public Scene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
+    protected Scene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
         this.gameEngine = gameEngine;
         this.batch = batch;
         this.font = font;
 
         this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, 800, 480);
+        this.camera.setToOrtho(false, 1280, 720);
     }
 
     @Override

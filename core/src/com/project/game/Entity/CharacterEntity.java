@@ -2,12 +2,15 @@ package com.project.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public abstract class CharacterEntity extends Entity {
     // to do add health and what not
-    public CharacterEntity(int posX, int posY, String type, Texture tex, Rectangle rec) {
-        super(posX, posY, type, tex, rec);
+    public CharacterEntity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed) {
+        super(entityID, pos, type, tex, rectangle, speed);
     }
+
+
 
 
 }
