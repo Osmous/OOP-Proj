@@ -1,11 +1,10 @@
 package com.project.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
-import java.lang.reflect.Array;
 
 
 public abstract class Entity {
@@ -16,6 +15,9 @@ public abstract class Entity {
     protected Rectangle rec;
     protected float speed;
     protected boolean[] blockedMovement;
+    protected Sprite sprite;
+    protected long nextHitTime;
+
     protected Entity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed) {
         this.entityID = entityID;
         this.pos = pos;
@@ -26,6 +28,9 @@ public abstract class Entity {
         // check variable for if for any reason cannot move in the any of the 4 directions
         // left, top , right , bottom
         this.blockedMovement = new boolean[4];
+        this.nextHitTime = 0;
+        this.sprite = new Sprite(this.tex);
+        sprite.setPosition(this.pos.x,this.pos.y);
     }
     protected void dispose(){
         this.tex.dispose();
@@ -93,5 +98,12 @@ public abstract class Entity {
 
     protected void setBlockedMovement(int index, boolean s) {
         this.blockedMovement[index] = s;
+    }
+
+    public long getNextHitTime() {
+        return nextHitTime;
+    }
+    public void setNextHitTime(long nextHitTime) {
+        this.nextHitTime = nextHitTime;
     }
 }

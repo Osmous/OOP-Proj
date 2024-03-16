@@ -1,12 +1,14 @@
 {
   "backgroundcolour": [32, 161, 47, 255],
+  "backgroundimage": "level_background.jpeg",
   "entities": [
     {
       "type": "player",
       "posX": 200,
       "posY": 200,
       "texturePath": "player.png",
-      "speed": 200
+      "speed": 200,
+      "health": 5
     },
     {
       "type": "enemy",
@@ -20,6 +22,13 @@
       "posX": 300,
       "posY": 100,
       "texturePath": "enemy.png",
+      "speed": 100
+    },
+    {
+      "type": "bullet",
+      "posX": 100,
+      "posY": 100,
+      "texturePath": "bullet.png",
       "speed": 100
     }
   ]

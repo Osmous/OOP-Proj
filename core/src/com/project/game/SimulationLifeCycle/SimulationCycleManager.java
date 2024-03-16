@@ -96,12 +96,14 @@ public class SimulationCycleManager {
         savedGames.set(currentGameIndex,current);
         gameEngine.entityManager.setLoadedEntities(new ArrayList<>());
         gameEngine.ioManager.resetKeypressedList();
+        gameEngine.sceneManager.setCurrentScene("pausescene");
         gameEngine.setScreen(new PauseScene(gameEngine,gameEngine.sceneManager.batch,gameEngine.sceneManager.font));
     }
 
     private void performResumeGame() {
         SavedGame current = savedGames.get(currentGameIndex);
         gameEngine.setScreen(current.getScreen());
+        gameEngine.sceneManager.setCurrentScene("levelscene");
         gameEngine.entityManager.setLoadedEntities(current.getLoadedEntities());
     }
 

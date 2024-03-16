@@ -41,7 +41,7 @@ public class SceneManager {
 
     public void setCurrentScene(String currentScene) {
         this.currentScene = currentScene;
-        if (currentScene.equals("levelscene")){
+        if (currentScene.equals("levelscene") && gameEngine.simulationCycleManager.getCurrentState().equals("IDLE")){
             this.gameEngine.simulationCycleManager.startGame();
         }
     }

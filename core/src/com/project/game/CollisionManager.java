@@ -62,7 +62,7 @@ public class CollisionManager {
 
     private void handleCollision(Entity entity1, Entity entity2) {
         // Print a message
-        System.out.println("Collision detected between entity " + entity1.getEntityID() + " and entity " + entity2.getEntityID());
+//        System.out.println("Collision detected between entity " + entity1.getEntityID() + " and entity " + entity2.getEntityID());
 
         // Calculate the direction of the push ( Calculating the difference in x and y positions )
         float dx = entity2.getPos().x - entity1.getPos().x;
@@ -90,7 +90,7 @@ public class CollisionManager {
     }
     private void handleCollisionWithScreenBoundary(Entity entity, String boundary) {
         // Print a message
-        System.out.println("Entity " + entity.getEntityID() + " hit the " + boundary + " boundary of the screen");
+//        System.out.println("Entity " + entity.getEntityID() + " hit the " + boundary + " boundary of the screen");
 
         // Calculate the direction of the push
         float dx = 0, dy = 0;
