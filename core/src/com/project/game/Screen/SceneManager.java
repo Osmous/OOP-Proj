@@ -32,7 +32,8 @@ public class SceneManager {
 
         // check if level scene is active, then render all loaded entites in entity manager
         if (currentScene.equals("levelscene")) {
-            gameEngine.entityManager.renderEntity(batch);
+//            gameEngine.entityManager.renderEntity(batch);
+            gameEngine.entityManager.updateEnemyRotation();
             gameEngine.aiControlManager.updateAI();
         }
 
@@ -41,7 +42,7 @@ public class SceneManager {
 
     public void setCurrentScene(String currentScene) {
         this.currentScene = currentScene;
-        if (currentScene.equals("levelscene")){
+        if (currentScene.equals("levelscene") && gameEngine.simulationCycleManager.getCurrentState().equals("IDLE")){
             this.gameEngine.simulationCycleManager.startGame();
         }
     }

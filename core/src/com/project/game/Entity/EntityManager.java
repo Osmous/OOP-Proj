@@ -29,7 +29,7 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
                 this.loadedEntities.add(player);
                 break;
             case ("enemy"):
@@ -40,6 +40,17 @@ public class EntityManager {
                 EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
                 this.loadedEntities.add(enemy);
+                break;
+            case ("bullet"):
+                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                rec = new Rectangle();
+                rec.height = tex.getHeight();
+                rec.width = tex.getWidth();
+                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(500, 500));
+//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
+                this.loadedEntities.add(bullet);
                 break;
         }
         this.nextID++;
@@ -91,6 +102,23 @@ public class EntityManager {
             }
         }
     }
+    public void updateEnemyRotation(){
+        Vector2 playerPos = null;
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                playerPos = entity.getPos();
+                break;
+            }
+        }
+        if(playerPos != null) {
+            for (Entity entity : this.loadedEntities) {
+                if (entity.getType().equals("enemy")) {
+                    Vector2 direction = new Vector2(playerPos.x - entity.pos.x, playerPos.y - entity.pos.y);
+                    entity.setRotation(direction.angleDeg());
+                }
+            }
+        }
+    }
 
     public List<Entity> getLoadedEntity() {
         return this.loadedEntities;
@@ -116,6 +144,15 @@ public class EntityManager {
         for (Entity entity: this.loadedEntities){
             if (entity.getEntityID() == ID){
                 return entity.getSpeed();
+            }
+        }
+        return 0;
+    }
+    public int getPlayerHealth(){
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                PlayerEntity temp = (PlayerEntity) entity;
+                return temp.getHealth();
             }
         }
         return 0;
