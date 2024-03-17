@@ -15,7 +15,7 @@ public class PlayerEntity extends CharacterEntity {
     }
 
     @Override
-    protected void renderEntity(SpriteBatch batch) {
+    protected void draw(SpriteBatch batch,float parentAlpha) {
 //        batch.draw(this.tex, this.pos.x, this.pos.y, this.rec.width, this.rec.height);
         sprite.setPosition(this.pos.x,this.pos.y);
         sprite.draw(batch);

@@ -118,6 +118,7 @@ public class LevelScene extends Scene {
 
 //        healthBar.updateHealth(gameEngine.entityManager.getPlayerHealth());
         healthBar.setHealth(gameEngine.entityManager.getPlayerHealth());
+        gameEngine.entityManager.updateEnemyRotation();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }

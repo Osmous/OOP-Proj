@@ -19,6 +19,7 @@ public abstract class Entity extends Actor {
     protected boolean[] blockedMovement;
     protected Sprite sprite;
     protected long nextHitTime;
+    protected float rotation;
 
     protected Entity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed) {
         this.entityID = entityID;
@@ -27,6 +28,7 @@ public abstract class Entity extends Actor {
         this.tex = tex;
         this.rec = rectangle;
         this.speed = speed;
+        this.rotation=0;
         // check variable for if for any reason cannot move in the any of the 4 directions
         // left, top , right , bottom
         this.blockedMovement = new boolean[4];
@@ -118,5 +120,17 @@ public abstract class Entity extends Actor {
     }
     public void setNextHitTime(long nextHitTime) {
         this.nextHitTime = nextHitTime;
+    }
+
+    @Override
+    public float getRotation() {
+        return rotation;
+    }
+
+    @Override
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+        sprite.setRotation(this.rotation);
+        super.setRotation(rotation);
     }
 }

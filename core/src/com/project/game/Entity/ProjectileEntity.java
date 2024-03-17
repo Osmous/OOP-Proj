@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.Vector2;
 
 public class ProjectileEntity extends Entity{
     private Vector2 direction;
-    private float rotation;
 
     protected ProjectileEntity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed, Vector2 mouseClick) {
         super(entityID, pos, type, tex, rectangle, speed);

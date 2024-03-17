@@ -46,10 +46,10 @@ public class EntityManager {
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(500, 500));
                 ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(500, 500));
+//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
                 this.loadedEntities.add(bullet);
                 break;
         }
@@ -99,6 +99,23 @@ public class EntityManager {
             Entity entity = iter.next();
             if (entity.getEntityID() == entityID) {
                 iter.remove();
+            }
+        }
+    }
+    public void updateEnemyRotation(){
+        Vector2 playerPos = null;
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                playerPos = entity.getPos();
+                break;
+            }
+        }
+        if(playerPos != null) {
+            for (Entity entity : this.loadedEntities) {
+                if (entity.getType().equals("enemy")) {
+                    Vector2 direction = new Vector2(playerPos.x - entity.pos.x, playerPos.y - entity.pos.y);
+                    entity.setRotation(direction.angleDeg());
+                }
             }
         }
     }
