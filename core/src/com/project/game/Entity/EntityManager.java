@@ -46,10 +46,10 @@ public class EntityManager {
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(300, 400));
 //                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(500, 500));
+                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
                 this.loadedEntities.add(bullet);
                 break;
         }

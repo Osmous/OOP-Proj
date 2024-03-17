@@ -102,9 +102,10 @@ public class SimulationCycleManager {
 
     private void performResumeGame() {
         SavedGame current = savedGames.get(currentGameIndex);
+        gameEngine.entityManager.setLoadedEntities(current.getLoadedEntities());
         gameEngine.setScreen(current.getScreen());
         gameEngine.sceneManager.setCurrentScene("levelscene");
-        gameEngine.entityManager.setLoadedEntities(current.getLoadedEntities());
+
     }
 
     private void performEndGame() {

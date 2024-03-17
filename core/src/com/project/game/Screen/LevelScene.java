@@ -57,9 +57,9 @@ public class LevelScene extends Scene {
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
 
-//        for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()){
-//            stage.addActor(entity);
-//        }
+        for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()){
+            stage.addActor(entity);
+        }
 
         // Initialize the health bar with the stage and max health
 //        healthBar = new HealthBar(stage, gameEngine.entityManager.getPlayerHealth()); // For example, max health is 5

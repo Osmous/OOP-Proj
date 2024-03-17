@@ -13,10 +13,9 @@ public class ProjectileEntity extends Entity{
 
     protected ProjectileEntity(int entityID, Vector2 pos, String type, Texture tex, Rectangle rectangle, float speed, Vector2 mouseClick) {
         super(entityID, pos, type, tex, rectangle, speed);
-        this.direction = new Vector2(this.pos.x - mouseClick.x,this.pos.y - mouseClick.y);
+        this.direction = new Vector2( mouseClick.x-this.pos.x,mouseClick.y - this.pos.y);
         this.direction.nor(); // Normalize the direction vector
-//        this.rotation = (MathUtils.atan2(this.pos.y, this.pos.x) - MathUtils.atan2(mouseClick.y, mouseClick.x));
-        this.rotation= 45;
+        this.rotation = this.direction.angleDeg();
         sprite.setRotation(this.rotation);
     }
 
@@ -26,4 +25,8 @@ public class ProjectileEntity extends Entity{
         sprite.setPosition(this.pos.x,this.pos.y);
         sprite.draw(batch);
     }
+    public Vector2 getDirection() {
+        return direction;
+    }
+
 }

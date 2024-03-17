@@ -1,13 +1,15 @@
 package com.project.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 
-public abstract class Entity {
+public abstract class Entity extends Actor {
     protected int entityID;
     protected Vector2 pos;
     protected String type;
@@ -31,6 +33,17 @@ public abstract class Entity {
         this.nextHitTime = 0;
         this.sprite = new Sprite(this.tex);
         sprite.setPosition(this.pos.x,this.pos.y);
+    }
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+//        batch.draw(this.tex, this.pos.x, this.pos.y, this.rec.width, this.rec.height);
+        sprite.setPosition(this.pos.x,this.pos.y);
+        sprite.draw(batch);
+    }
+    @Override
+    public void act(float delta) {
+        super.act(delta);
+        // Here you can add logic that needs to run each frame, if necessary
     }
     protected void dispose(){
         this.tex.dispose();
