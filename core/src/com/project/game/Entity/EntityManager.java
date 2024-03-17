@@ -77,6 +77,10 @@ public class EntityManager {
                     case ("setBlockedMovement"):
                         entity.setBlockedMovement((int) params.get("id"), (boolean) params.get("state"));
                         break;
+                    case ("rotatePlayer"):
+                        Vector2 direction = (Vector2) params.get("direction");
+                        entity.setRotation(direction.angleDeg());
+                        break;
 
                 }
                 return;
