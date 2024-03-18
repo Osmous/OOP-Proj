@@ -29,7 +29,7 @@ public class GameEngine extends Game {
 	@Override
 	public void create() {
 		// Init all managers
-		entityManager = new EntityManager();
+		entityManager = new EntityManager(this);
 		aiControlManager = new AIControlManager(this);
 		playerControlManager = new PlayerControlManager(this);
 		ioManager = new IOManager(this);

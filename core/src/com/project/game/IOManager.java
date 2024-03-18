@@ -29,10 +29,21 @@ public class IOManager extends InputAdapter {
 //        }
         if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
             keypressedlist.add(Integer.toString(keycode));
-            System.out.println(keycode);
+//            System.out.println(keycode);
         }
         if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
             gameEngine.simulationCycleManager.pauseGame();
+        }
+        if(keycode == Input.Keys.P && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+            List<Integer> holder = new ArrayList<Integer>();
+            for(Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
+                if (entity.getType().equals("enemy")) {
+                    holder.add(entity.getEntityID());
+                }
+            }
+            for(Integer id : holder){
+                this.gameEngine.entityManager.deleteEntity(id);
+            }
         }
         return true;
     }

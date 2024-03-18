@@ -7,14 +7,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Rectangle;
+import com.project.game.GameEngine;
+import com.project.game.Screen.LevelScene;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class EntityManager {
     private List<Entity> loadedEntities;
     private int nextID;
+    private GameEngine gameEngine;
 
-    public EntityManager() {
+    public EntityManager(GameEngine gameEngine) {
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID = 0;
     }
@@ -102,9 +106,11 @@ public class EntityManager {
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
             if (entity.getEntityID() == entityID) {
+                entity.dispose();
                 iter.remove();
             }
         }
+
     }
     public void updateEnemyRotation(){
         Vector2 playerPos = null;

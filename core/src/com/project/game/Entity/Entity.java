@@ -48,9 +48,11 @@ public abstract class Entity extends Actor {
         // Here you can add logic that needs to run each frame, if necessary
     }
     protected void dispose(){
+        this.sprite.getTexture().dispose();
         this.tex.dispose();
+        super.remove();
     }
-        protected void setPosX(float posX) {
+    protected void setPosX(float posX) {
         this.pos.x = posX;
     }
 

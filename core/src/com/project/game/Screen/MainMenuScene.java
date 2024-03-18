@@ -49,7 +49,9 @@ public class MainMenuScene extends Scene {
                 // hand back control to iomanager for game control
                 Gdx.input.setInputProcessor(gameEngine.ioManager);
                 gameEngine.sceneManager.setCurrentScene("levelscene");
-                gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath()));
+                int levelNum=gameEngine.sceneManager.getLevelNum();
+                gameEngine.sceneManager.setLevelNum(levelNum+1);
+                gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath(String.valueOf(levelNum+1))));
             }
         });
 
