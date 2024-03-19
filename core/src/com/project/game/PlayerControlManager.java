@@ -86,10 +86,11 @@ public class PlayerControlManager {
                     break;
             }
         }
-        Map<String, Object> data = new HashMap<>();
-        data.put("direction", direction);
-        gameEngine.entityManager.updateEntity("rotatePlayer", gameEngine.entityManager.getPlayerEntityId(), data);
-
+        if(!direction.isZero()){
+            Map<String, Object> data = new HashMap<>();
+            data.put("direction", direction);
+            gameEngine.entityManager.updateEntity("rotatePlayer", gameEngine.entityManager.getPlayerEntityId(), data);
+        }
     }
 
 

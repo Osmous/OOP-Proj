@@ -68,6 +68,7 @@ public class SimulationCycleManager {
 //        }
 //    }
 
+
     public void endGame() {
         if (currentState != GameState.END) {
             performEndGame();
@@ -76,6 +77,10 @@ public class SimulationCycleManager {
         } else {
             System.out.println("Cannot end game. Game is already ended.");
         }
+    }
+
+    public void setCurrentStateIdle() {
+        this.currentState = GameState.IDLE;
     }
 
     public String getCurrentState() {
@@ -110,6 +115,8 @@ public class SimulationCycleManager {
 
     private void performEndGame() {
         // Logic to end the game
+        this.gameEngine.entityManager.clearAllEntities();
+        this.gameEngine.ioManager.reset();
     }
     	
  }

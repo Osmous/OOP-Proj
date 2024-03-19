@@ -56,16 +56,26 @@ public class SceneManager {
 
     private void nextLevelCheck(){
         boolean flag = true;
-        // currently set to check if no enemy loaded
-        // to do: add total number of enemy spawns left and if enemy is in loaded entity list
-        // after redo spawning machanics
-        for (Entity entity: gameEngine.entityManager.getLoadedEntity()){
-            if (entity.getType().equals("enemy") || ((LevelScene)gameEngine.getScreen()).getEnemyCount()!=0){
-                flag = false;
-                break;
+        if (((LevelScene)gameEngine.getScreen()).getEnemyCount()!=0){
+            flag = false;
+        }else{
+            for (Entity entity: gameEngine.entityManager.getLoadedEntity()){
+                if (entity.getType().equals("enemy")){
+                    flag = false;
+                    break;
+                }
             }
         }
         if (flag){
+            if(levelNum == this.gameEngine.config.getInt("endLevel")){
+                // do endscene transition here
+                currentScene = "endscene";
+                levelNum=0;
+                gameEngine.getScreen().dispose();
+                gameEngine.setScreen(new EndScene(gameEngine, batch, font));
+                gameEngine.simulationCycleManager.endGame();
+                return;
+            }
             levelNum = levelNum +1;
             gameEngine.getScreen().dispose();
             gameEngine.setScreen(new LevelScene(gameEngine, batch, font, getLevelScenePath(String.valueOf(levelNum))));

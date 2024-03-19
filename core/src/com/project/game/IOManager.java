@@ -78,4 +78,10 @@ public class IOManager extends InputAdapter {
         }
         return true;
     }
+
+    public void reset(){
+        this.keypressedlist = new ArrayList<String>();
+        this.isButtonPressed = false;
+    }
+
 }

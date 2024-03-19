@@ -52,8 +52,6 @@ public class LevelScene extends Scene {
                 enemyCount=entitydata.getInt("count");
             }
         }
-
-
         backgroundTexture = new Texture(Gdx.files.internal(this.levelData.getString("backgroundimage")));
         backgroundImage = new Image(backgroundTexture);
 
@@ -93,16 +91,8 @@ public class LevelScene extends Scene {
         gameEngine.entityManager.updateEnemyRotation();
         stage.draw();
         spawnEnemy();
-
-        //test level transition code
-//        int levelNum=gameEngine.sceneManager.getLevelNum();
-//        System.out.println(levelNum);
-//        if (levelNum<2) {
-//            gameEngine.sceneManager.setLevelNum(levelNum+1);
-//            gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath(String.valueOf(levelNum+1))));
-//            dispose();
-//        }
     }
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -143,7 +133,6 @@ public class LevelScene extends Scene {
                         break;
                     case(2):
                         posX = rand.nextInt((int)stage.getWidth());
-                        System.out.println(posX);
                         break;
                     case(3):
                         posX =(int)(stage.getWidth())+rand.nextInt((int)stage.getWidth()/5);
@@ -155,7 +144,6 @@ public class LevelScene extends Scene {
                         break;
                     case(2):
                         posY = rand.nextInt((int)stage.getHeight());
-                        System.out.println(posY);
                         break;
                     case(3):
                         posY =(int)(stage.getHeight())+rand.nextInt((int)stage.getHeight()/5);
@@ -166,12 +154,7 @@ public class LevelScene extends Scene {
                 holder.set(String.valueOf(posX));
                 holder = enemyData.get("posY");
                 holder.set(String.valueOf(posY));
-            
-
                 this.gameEngine.entityManager.createEntity(enemyData);
-
-
-
             }
             for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()) {
                 stage.addActor(entity);
