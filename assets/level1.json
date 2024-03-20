@@ -20,7 +20,7 @@
       "count": 10
     },
     {
-      "type": "bullet",
+      "type": "projectile",
       "posX": 100,
       "posY": 100,
       "texturePath": "bullet.png",
