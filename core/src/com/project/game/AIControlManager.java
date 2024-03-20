@@ -17,6 +17,7 @@ public class AIControlManager {
 
     public void updateAI() {
         Vector2 playerPosition = gameEngine.entityManager.getPlayerPosition();
+
         float delta = Gdx.graphics.getDeltaTime();
 
         for (Entity entity : gameEngine.entityManager.getLoadedEntity()) {
@@ -26,6 +27,8 @@ public class AIControlManager {
                 updateProjectileMovement((ProjectileEntity) entity, delta);
             }
         }
+        //update enemy roation
+        gameEngine.entityManager.updateEnemyRotation();
     }
 
     private void generateEnemyMovement(EnemyEntity enemy, Vector2 playerPosition, float delta) {
@@ -35,7 +38,6 @@ public class AIControlManager {
         float enemySpeed = enemy.getSpeed();
         float deltaX = direction.x * enemySpeed * delta;
         float deltaY = direction.y * enemySpeed * delta;
-
         // Update enemy position
         Map<String, Object> data = new HashMap<>();
         data.put("deltaMovement", deltaX);

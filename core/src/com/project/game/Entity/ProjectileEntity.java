@@ -17,13 +17,6 @@ public class ProjectileEntity extends Entity{
         this.rotation = this.direction.angleDeg();
         sprite.setRotation(this.rotation);
     }
-
-    @Override
-    protected void renderEntity(SpriteBatch batch) {
-//        batch.draw(this.tex, this.pos.x, this.pos.y, this.rec.width, this.rec.height);
-        sprite.setPosition(this.pos.x,this.pos.y);
-        sprite.draw(batch);
-    }
     public Vector2 getDirection() {
         return direction;
     }

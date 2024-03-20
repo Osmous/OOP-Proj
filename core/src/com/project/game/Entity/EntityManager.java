@@ -42,7 +42,7 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
                 this.loadedEntities.add(enemy);
                 break;
             case ("projectile"):
@@ -51,7 +51,7 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 ProjectileEntity projectile = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(500, 500));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
 //                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
 //                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
                 this.loadedEntities.add(projectile);
@@ -85,24 +85,17 @@ public class EntityManager {
                         Vector2 direction = (Vector2) params.get("direction");
                         entity.setRotation(direction.angleDeg());
                         break;
+                    case ("updateHealth"):
+                        ((PlayerEntity) entity).setHealth((int) params.get("health"));
+                        break;
 
                 }
                 return;
             }
         }
     }
-    public void renderEntity(SpriteBatch batch){
-        batch.begin();
-        for (Entity entity : this.loadedEntities) {
-            entity.renderEntity(batch);
-        }
-        batch.end();
-    }
 
     public void deleteEntity(int entityID) {
-        // todo
-//        loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
-
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
             if (entity.getEntityID() == entityID) {

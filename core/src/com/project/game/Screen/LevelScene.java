@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import com.project.game.Entity.EnemyEntity;
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.PlayerEntity;
 import com.project.game.GameEngine;
@@ -114,7 +115,7 @@ public class LevelScene extends Scene {
         int posY = 0;
 
         if (System.currentTimeMillis()>nextSpawnTime){
-            int spawncount = rand.nextInt(3)+1;
+            int spawncount = rand.nextInt(this.levelData.getInt("maxspawnlimitperinterval"))+1;
             if (spawncount>enemyCount){
                 spawncount=enemyCount;
             }

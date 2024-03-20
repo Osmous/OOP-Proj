@@ -5,7 +5,9 @@ import com.badlogic.gdx.InputAdapter;
 import com.project.game.Entity.Entity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IOManager extends InputAdapter {
     private GameEngine gameEngine;
@@ -34,6 +36,8 @@ public class IOManager extends InputAdapter {
         if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
             gameEngine.simulationCycleManager.pauseGame();
         }
+
+        //FOR TESTING PURPOSE
         if(keycode == Input.Keys.P && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
             List<Integer> holder = new ArrayList<Integer>();
             for(Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
@@ -45,6 +49,13 @@ public class IOManager extends InputAdapter {
                 this.gameEngine.entityManager.deleteEntity(id);
             }
         }
+        //FOR TESTING PURPOSE
+        if(keycode == Input.Keys.L && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+            Map<String, Object> data = new HashMap<>();
+            data.put("health", this.gameEngine.entityManager.getPlayerHealth()-1);
+            this.gameEngine.entityManager.updateEntity("updateHealth",this.gameEngine.entityManager.getPlayerEntityId(),data);
+        }
+
         return true;
     }
     @Override

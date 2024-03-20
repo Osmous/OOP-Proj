@@ -36,19 +36,12 @@ public class SceneManager {
         // just so i can put render here and not do a super.render() in game engine
         if (gameEngine.getScreen() != null) gameEngine.getScreen().render(Gdx.graphics.getDeltaTime());
 
-        // check if level scene is active, then render all loaded entites in entity manager
+        // check if level scene is active, then handle all ai control and update of enemy roation
         if (currentScene.equals("levelscene")) {
-//            gameEngine.entityManager.renderEntity(batch);
             // entity rendering called under levelscene.java as stage.draw()
+            // actual entity rendering code under Entity.java as draw() function
             nextLevelCheck();
-            gameEngine.entityManager.updateEnemyRotation();
             gameEngine.aiControlManager.updateAI();
-            // test delete entity for level trasition check
-//            if(levelNum==1){
-//                gameEngine.entityManager.deleteEntity(1);
-//                gameEngine.entityManager.deleteEntity(2);
-//            }
-//            System.out.println(((LevelScene)gameEngine.getScreen()).Testvar);
         }
 
 
@@ -56,6 +49,18 @@ public class SceneManager {
 
     private void nextLevelCheck(){
         boolean flag = true;
+        // check if player health is 0
+        // if it is then end the game show lose screen
+        if (this.gameEngine.entityManager.getPlayerHealth() <=0){
+            currentScene = "endscene";
+            levelNum=0;
+            gameEngine.getScreen().dispose();
+            gameEngine.setScreen(new LoseScene(gameEngine, batch, font));
+            gameEngine.simulationCycleManager.endGame();
+            return;
+        }
+
+        //check win conditions: enemy spawns remaining is 0 and no enemies currently loaded
         if (((LevelScene)gameEngine.getScreen()).getEnemyCount()!=0){
             flag = false;
         }else{
@@ -66,9 +71,12 @@ public class SceneManager {
                 }
             }
         }
+
+        // if flag is true, meaning win conditoins met then either transition to next level or to win scene
+        // win scene only if level is last level.
         if (flag){
+            // check if level is last level
             if(levelNum == this.gameEngine.config.getInt("endLevel")){
-                // do endscene transition here
                 currentScene = "endscene";
                 levelNum=0;
                 gameEngine.getScreen().dispose();

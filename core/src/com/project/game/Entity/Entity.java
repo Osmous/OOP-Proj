@@ -48,8 +48,6 @@ public abstract class Entity extends Actor {
         // Here you can add logic that needs to run each frame, if necessary
     }
     protected void dispose(){
-        this.sprite.getTexture().dispose();
-        this.tex.dispose();
         super.remove();
     }
     protected void setPosX(float posX) {
@@ -90,9 +88,7 @@ public abstract class Entity extends Actor {
     protected void setRec(Rectangle rec) {
         this.rec = rec;
     }
-
-    protected void renderEntity(SpriteBatch batch) {
-    }
+    
     public float getSpeed() {
         return speed;
     }
@@ -134,5 +130,8 @@ public abstract class Entity extends Actor {
         this.rotation = rotation;
         sprite.setRotation(this.rotation);
         super.setRotation(rotation);
+    }
+    public Sprite getSprite() {
+        return sprite;
     }
 }
