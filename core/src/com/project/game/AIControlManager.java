@@ -50,7 +50,12 @@ public class AIControlManager {
         float deltaY = projectile.getDirection().y * projectile.getSpeed() * delta;
 
         // Move the projectile
-        projectile.moveBy(deltaX, deltaY);
+//        projectile.moveBy(deltaX, deltaY);
+        Map<String, Object> data = new HashMap<>();
+        data.put("deltaMovement", deltaX);
+        gameEngine.entityManager.updateEntity("moveX", projectile.getEntityID(), data);
+        data.put("deltaMovement", deltaY);
+        gameEngine.entityManager.updateEntity("moveY", projectile.getEntityID(), data);
     }
 
     private Vector2 getDirectionFromEnemyToPlayer(EnemyEntity enemy) {
