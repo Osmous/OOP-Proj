@@ -48,10 +48,11 @@ public class GameEngine extends Game {
 		// render scenes
 		sceneManager.render();
 		// Check Collision
-//		collisionManager.checkCollisions();
+		collisionManager.checkCollisions();
 		if (!ioManager.getKeypressedlist().isEmpty()){
 			playerControlManager.handleInput(ioManager.getKeypressedlist());
 		}
+
 	};
 	@Override
 	public void dispose() {
