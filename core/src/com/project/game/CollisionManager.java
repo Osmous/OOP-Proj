@@ -24,6 +24,7 @@ public class CollisionManager {
         List<Entity> entities = this.gameEngine.entityManager.getLoadedEntity();
         for (Entity entity : entities) {
             // This part is also crashing
+            // Checking Collision between projectile and Screen Boundaries
           //  if (entity.getType().equals("projectile")) {
           //      if (entity.getPos().x < 0 || entity.getPos().x + entity.getSprite().getWidth() >= Gdx.graphics.getWidth() ||
           //              entity.getPos().y < 0 || entity.getPos().y + entity.getSprite().getHeight() >= Gdx.graphics.getHeight()) {
@@ -47,7 +48,6 @@ public class CollisionManager {
             for (Entity otherEntity : entities) {
                 if (entity.getEntityID() != otherEntity.getEntityID()) {
                     if (checkCollision(entity, otherEntity)) {
-                        System.out.println("Collision detected between entity " + entity.getType() + " and entity " + otherEntity.getType());
                         handleCollision(entity, otherEntity);
                     }
                 }
@@ -88,21 +88,22 @@ public class CollisionManager {
 
         // This part is causing the application to crash when projectile and enemy entity collide
         // Player Projectile collide with enemy
-        //else if (entity1.getType().equals("projectile")) {
-        //   if (entity2.getType().equals("enemy")) {
+        else if (entity1.getType().equals("projectile")) {
+           if (entity2.getType().equals("enemy")) {
                 // Delete player bullet entity
                 //entityManager.deleteEntity(entity1.getEntityID());
 
                 // Delete enemy entity
-         //     entityManager.deleteEntity(entity2.getEntityID());
-         //   }
-        //}
+                entityManager.deleteEntity(entity2.getEntityID());
+           }
+        }
 
         // Set cooldown for both entities
         int cooldownDuration = 2000; // Cooldown duration in milliseconds (adjust as needed)
         collisionCooldowns.put(entity1.getEntityID(), currentTime + cooldownDuration);
         collisionCooldowns.put(entity2.getEntityID(), currentTime + cooldownDuration);
     }
+
 
     private void handleCollisionWithScreenBoundary(Entity entity, String boundary) {
         Map<String, Object> data = new HashMap<>();
