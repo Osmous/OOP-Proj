@@ -10,16 +10,18 @@ import java.util.Map;
 
 public class PlayerControlManager {
     // Private instances
-    private GameEngine gameEngine;
+    private final GameEngine gameEngine;
     private float playerSpeed; // Hold player's speed
+    private Vector2 playerPos; // Player's position
 
     // Constructor
     public PlayerControlManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
+        this.playerPos = gameEngine.entityManager.getPlayerPosition(); // Initialize player position
     }
 
     // Method to move player left
-    private void movePlayerLeft(float delta) {
+    private void movePlayerLeft(float delta, Vector2 playerPos) {
         playerSpeed = gameEngine.entityManager.getEntitySpeed(gameEngine.entityManager.getPlayerEntityId());
         // Calculate distance to move based on player's speed and delta
         float distanceToMove = -playerSpeed * delta;
@@ -30,7 +32,7 @@ public class PlayerControlManager {
     }
 
     // Method to move player right
-    private void movePlayerRight(float delta) {
+    private void movePlayerRight(float delta, Vector2 playerPos) {
         playerSpeed = gameEngine.entityManager.getEntitySpeed(gameEngine.entityManager.getPlayerEntityId());
         // Calculate distance to move based on player's speed and delta
         float distanceToMove = playerSpeed * delta;
@@ -40,7 +42,7 @@ public class PlayerControlManager {
         gameEngine.entityManager.updateEntity("moveX", gameEngine.entityManager.getPlayerEntityId(), data);
     }
 
-    private void movePlayerDown(float delta) {
+    private void movePlayerDown(float delta, Vector2 playerPos) {
         playerSpeed = gameEngine.entityManager.getEntitySpeed(gameEngine.entityManager.getPlayerEntityId());
         // Calculate distance to move based on player's speed and delta
         float distanceToMove = -playerSpeed * delta;
@@ -51,7 +53,7 @@ public class PlayerControlManager {
     }
 
     // Method to move player right
-    private void movePlayerUp(float delta) {
+    private void movePlayerUp(float delta, Vector2 playerPos) {
         playerSpeed = gameEngine.entityManager.getEntitySpeed(gameEngine.entityManager.getPlayerEntityId());
         // Calculate distance to move based on player's speed and delta
         float distanceToMove = playerSpeed * delta;
@@ -61,36 +63,44 @@ public class PlayerControlManager {
         gameEngine.entityManager.updateEntity("moveY", gameEngine.entityManager.getPlayerEntityId(), data);
     }
 
-    // Method to handle key input and move player accordingly
-    public void handleInput(List<String> keyCodeList) {
-        float delta = Gdx.graphics.getDeltaTime();
-        // add direction vector2 here
-        Vector2 direction = new Vector2(0,0);
-        for (String keyCode: keyCodeList){
-            switch (Integer.parseInt(keyCode)) {
-                case Input.Keys.LEFT:
-                    direction.x = direction.x-1;
-                    movePlayerLeft(delta);
-                    break;
-                case Input.Keys.RIGHT:
-                    direction.x = direction.x+1;
-                    movePlayerRight(delta);
-                    break;
-                case Input.Keys.UP:
-                    direction.y = direction.y+1;
-                    movePlayerUp(delta);
-                    break;
-                case Input.Keys.DOWN:
-                    direction.y = direction.y -1;
-                    movePlayerDown(delta);
-                    break;
+    // Shoot function (create a projectile entity)
+    /* public void shoot(Vector2 mousePosition) {
+        // Create projectile entity at the player's position
+        gameEngine.entityManager.createEntity(playerPos, mousePosition);
+    }
+    */
+
+        // Method to handle key input and move player accordingly
+        // Takes additional parameter of playerPos of type Vector2 to represent the position of the player obtained from entityManager.getPlayerPos() method
+        public void handleInput(List<String> keyCodeList) {
+            float delta = Gdx.graphics.getDeltaTime();
+            // Update player position
+            this.playerPos = gameEngine.entityManager.getPlayerPosition();
+            // add direction vector2 here
+            Vector2 direction = new Vector2(0,0);
+            for (String keyCode: keyCodeList){
+                switch (Integer.parseInt(keyCode)) {
+                    case Input.Keys.LEFT:
+                        direction.x = direction.x-1;
+                        movePlayerLeft(delta, playerPos);
+                        break;
+                    case Input.Keys.RIGHT:
+                        direction.x = direction.x+1;
+                        movePlayerRight(delta, playerPos);
+                        break;
+                    case Input.Keys.UP:
+                        direction.y = direction.y+1;
+                        movePlayerUp(delta, playerPos);
+                        break;
+                    case Input.Keys.DOWN:
+                        direction.y = direction.y -1;
+                        movePlayerDown(delta, playerPos);
+                        break;
+                }
             }
-        }
         Map<String, Object> data = new HashMap<>();
         data.put("direction", direction);
         gameEngine.entityManager.updateEntity("rotatePlayer", gameEngine.entityManager.getPlayerEntityId(), data);
 
     }
-
-
 }
