@@ -23,6 +23,14 @@ public class CollisionManager {
     public void checkCollisions() {
         List<Entity> entities = this.gameEngine.entityManager.getLoadedEntity();
         for (Entity entity : entities) {
+            // This part is also crashing
+          //  if (entity.getType().equals("projectile")) {
+          //      if (entity.getPos().x < 0 || entity.getPos().x + entity.getSprite().getWidth() >= Gdx.graphics.getWidth() ||
+          //              entity.getPos().y < 0 || entity.getPos().y + entity.getSprite().getHeight() >= Gdx.graphics.getHeight()) {
+                    // Delete projectile entity if it goes out of bounds
+           //         entityManager.deleteEntity(entity.getEntityID());
+           //     }
+          //  }
             // Check for collision with screen boundaries
             if (entity.getPos().x < 0) {
                 handleCollisionWithScreenBoundary(entity, "left");
@@ -34,7 +42,6 @@ public class CollisionManager {
             } else if (entity.getPos().y + entity.getSprite().getHeight() >= Gdx.graphics.getHeight()) {
                 handleCollisionWithScreenBoundary(entity, "top");
             }
-
 
             // Check for collision with other entities
             for (Entity otherEntity : entities) {
@@ -79,17 +86,17 @@ public class CollisionManager {
             }
     }
 
-        // This part is causing the application to crash when  projectile and ememy entity colide
+        // This part is causing the application to crash when projectile and enemy entity collide
         // Player Projectile collide with enemy
-        else if (entity1.getType().equals("projectile")) {
-            if (entity2.getType().equals("enemy")) {
+        //else if (entity1.getType().equals("projectile")) {
+        //   if (entity2.getType().equals("enemy")) {
                 // Delete player bullet entity
-                entityManager.deleteEntity(entity1.getEntityID());
+                //entityManager.deleteEntity(entity1.getEntityID());
 
                 // Delete enemy entity
-                entityManager.deleteEntity(entity2.getEntityID());
-            }
-        }
+         //     entityManager.deleteEntity(entity2.getEntityID());
+         //   }
+        //}
 
         // Set cooldown for both entities
         int cooldownDuration = 2000; // Cooldown duration in milliseconds (adjust as needed)
