@@ -10,7 +10,7 @@ public class CollisionManager {
 
     private GameEngine gameEngine;
     private EntityManager entityManager;
-    private Map<Integer, Long> collisionCooldowns = new HashMap<>(); // Map to store collision cool down times for each entity
+
 
     public CollisionManager(GameEngine gameEngine){
         this.gameEngine = gameEngine;
@@ -18,17 +18,18 @@ public class CollisionManager {
     }
 
     public void checkCollisions() {
-        List<Entity> entities = this.gameEngine.entityManager.getLoadedEntity();
-        for (Entity entity : entities) {
-            // This part is also crashing
+            List<Entity> entities = new ArrayList<>(this.gameEngine.entityManager.getLoadedEntity()); // Create a copy of the list
+            for (Entity entity : entities) {
+                // Your collision detection logic goes here
+
             // Checking Collision between projectile and Screen Boundaries
-          //  if (entity.getType().equals("projectile")) {
-          //      if (entity.getPos().x < 0 || entity.getPos().x + entity.getSprite().getWidth() >= Gdx.graphics.getWidth() ||
-          //              entity.getPos().y < 0 || entity.getPos().y + entity.getSprite().getHeight() >= Gdx.graphics.getHeight()) {
-                    // Delete projectile entity if it goes out of bounds
-           //         entityManager.deleteEntity(entity.getEntityID());
-           //     }
-          //  }
+           if (entity.getType().equals("projectile")) {
+               if (entity.getPos().x < 0 || entity.getPos().x + entity.getSprite().getWidth() >= Gdx.graphics.getWidth() || entity.getPos().y < 0 || entity.getPos().y + entity.getSprite().getHeight() >= Gdx.graphics.getHeight())
+               {
+                   //Delete projectile entity if it goes out of bounds
+                   entityManager.deleteEntity(entity.getEntityID());
+               }
+           }
             // Check for collision with screen boundaries
             if (entity.getPos().x < 0) {
                 handleCollisionWithScreenBoundary(entity, "left");
@@ -82,10 +83,9 @@ public class CollisionManager {
                 if (playerHealth <= 0) {
                     // Delete the player entity immediately
                     this.gameEngine.entityManager.deleteEntity(entity1.getEntityID());
-
+                    }
                 }
             }
-        }
 
         // Player Projectile collide with enemy
         else if (entity1.getType().equals("projectile") && entity2.getType().equals("enemy")) {
@@ -94,16 +94,12 @@ public class CollisionManager {
             entityManager.deleteEntity(entity2.getEntityID());
         }
 
-
-
         // Set cooldown for the player entity
         if (entity1.getType().equals("player")) {
             int cooldownDuration = 2000; // Cooldown duration in milliseconds (adjust as needed)
             entity1.setNextHitTime(currentTime + cooldownDuration);
         }
     }
-
-
 
 
     private void handleCollisionWithScreenBoundary(Entity entity, String boundary) {
