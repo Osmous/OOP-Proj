@@ -14,50 +14,55 @@ import java.util.*;
 import java.util.logging.Level;
 
 public class EntityManager {
-    private List<Entity> loadedEntities;
-    private int nextID;
+    protected List<Entity> loadedEntities;
+    protected int nextID;
     private GameEngine gameEngine;
 
+    protected EntityFactory entityFactory;
+
     public EntityManager(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID = 0;
+        this.entityFactory = new EntityFactory();
     }
 
     public void createEntity(JsonValue parameters) {
-        Texture tex;
-        Rectangle rec;
-        switch (parameters.getString("type")){
-            case ("player"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-                rec = new Rectangle();
-                rec.height = tex.getHeight();
-                rec.width = tex.getWidth();
-                PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
-                this.loadedEntities.add(player);
-                break;
-            case ("enemy"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-                rec = new Rectangle();
-                rec.height = tex.getHeight();
-                rec.width = tex.getWidth();
-                EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
-                this.loadedEntities.add(enemy);
-                break;
-            case ("projectile"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-                rec = new Rectangle();
-                rec.height = tex.getHeight();
-                rec.width = tex.getWidth();
-                ProjectileEntity projectile = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
-//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
-                this.loadedEntities.add(projectile);
-                break;
-        }
-        this.nextID++;
+//        Texture tex;
+//        Rectangle rec;
+//        switch (parameters.getString("type")){
+//            case ("player"):
+//                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+//                rec = new Rectangle();
+//                rec.height = tex.getHeight();
+//                rec.width = tex.getWidth();
+//                PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
+//                this.loadedEntities.add(player);
+//                break;
+//            case ("enemy"):
+//                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+//                rec = new Rectangle();
+//                rec.height = tex.getHeight();
+//                rec.width = tex.getWidth();
+//                EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
+//                this.loadedEntities.add(enemy);
+//                break;
+//            case ("projectile"):
+//                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+//                rec = new Rectangle();
+//                rec.height = tex.getHeight();
+//                rec.width = tex.getWidth();
+//                ProjectileEntity projectile = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
+////                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+////                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
+//                this.loadedEntities.add(projectile);
+//                break;
+//        }
+//        this.nextID++;
+        this.loadedEntities.add(entityFactory.createEntity(parameters,this.gameEngine));
     }
 
     public void updateEntity(String operation, int entityID, Map<String, Object> params) {
@@ -172,5 +177,13 @@ public class EntityManager {
     public void setLoadedEntities(List<Entity> loadentity){
         this.loadedEntities=loadentity;
 
+    }
+
+    public int getNextID() {
+        return nextID;
+    }
+
+    public void setNextID(int nextID) {
+        this.nextID = nextID;
     }
 }
