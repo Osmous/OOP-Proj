@@ -1,5 +1,7 @@
 {
   "levelPath": {
-    "level1": "level1.json"
-  }
+    "1": "level1.json",
+    "2": "level2.json"
+  },
+  "endLevel": 2
 }

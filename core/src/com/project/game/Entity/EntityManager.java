@@ -7,14 +7,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Rectangle;
+import com.project.game.GameEngine;
+import com.project.game.Screen.LevelScene;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class EntityManager {
     private List<Entity> loadedEntities;
     private int nextID;
+    private GameEngine gameEngine;
 
-    public EntityManager() {
+    public EntityManager(GameEngine gameEngine) {
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID = 0;
     }
@@ -29,7 +33,7 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
                 this.loadedEntities.add(player);
                 break;
             case ("enemy"):
@@ -38,8 +42,19 @@ public class EntityManager {
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
                 EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
                 this.loadedEntities.add(enemy);
+                break;
+            case ("projectile"):
+                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                rec = new Rectangle();
+                rec.height = tex.getHeight();
+                rec.width = tex.getWidth();
+                ProjectileEntity projectile = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
+//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
+                this.loadedEntities.add(projectile);
                 break;
         }
         this.nextID++;
@@ -66,28 +81,44 @@ public class EntityManager {
                     case ("setBlockedMovement"):
                         entity.setBlockedMovement((int) params.get("id"), (boolean) params.get("state"));
                         break;
+                    case ("rotatePlayer"):
+                        Vector2 direction = (Vector2) params.get("direction");
+                        entity.setRotation(direction.angleDeg());
+                        break;
+                    case ("updateHealth"):
+                        ((PlayerEntity) entity).setHealth((int) params.get("health"));
+                        break;
 
                 }
                 return;
             }
         }
     }
-    public void renderEntity(SpriteBatch batch){
-        batch.begin();
-        for (Entity entity : this.loadedEntities) {
-            entity.renderEntity(batch);
-        }
-        batch.end();
-    }
 
     public void deleteEntity(int entityID) {
-        // todo
-       // loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
-
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
             if (entity.getEntityID() == entityID) {
+                entity.dispose();
                 iter.remove();
+            }
+        }
+
+    }
+    public void updateEnemyRotation(){
+        Vector2 playerPos = null;
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                playerPos = entity.getPos();
+                break;
+            }
+        }
+        if(playerPos != null) {
+            for (Entity entity : this.loadedEntities) {
+                if (entity.getType().equals("enemy")) {
+                    Vector2 direction = new Vector2(playerPos.x - entity.pos.x, playerPos.y - entity.pos.y);
+                    entity.setRotation(direction.angleDeg());
+                }
             }
         }
     }
@@ -116,6 +147,15 @@ public class EntityManager {
         for (Entity entity: this.loadedEntities){
             if (entity.getEntityID() == ID){
                 return entity.getSpeed();
+            }
+        }
+        return 0;
+    }
+    public int getPlayerHealth(){
+        for (Entity entity : this.loadedEntities) {
+            if (entity.getType().equals("player")){
+                PlayerEntity temp = (PlayerEntity) entity;
+                return temp.getHealth();
             }
         }
         return 0;

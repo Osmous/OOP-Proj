@@ -2,6 +2,7 @@ package com.project.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,23 +64,33 @@ public class PlayerControlManager {
     // Method to handle key input and move player accordingly
     public void handleInput(List<String> keyCodeList) {
         float delta = Gdx.graphics.getDeltaTime();
+        // add direction vector2 here
+        Vector2 direction = new Vector2(0,0);
         for (String keyCode: keyCodeList){
             switch (Integer.parseInt(keyCode)) {
                 case Input.Keys.LEFT:
+                    direction.x = direction.x-1;
                     movePlayerLeft(delta);
                     break;
                 case Input.Keys.RIGHT:
+                    direction.x = direction.x+1;
                     movePlayerRight(delta);
                     break;
                 case Input.Keys.UP:
+                    direction.y = direction.y+1;
                     movePlayerUp(delta);
                     break;
                 case Input.Keys.DOWN:
+                    direction.y = direction.y -1;
                     movePlayerDown(delta);
                     break;
             }
         }
-
+        if(!direction.isZero()){
+            Map<String, Object> data = new HashMap<>();
+            data.put("direction", direction);
+            gameEngine.entityManager.updateEntity("rotatePlayer", gameEngine.entityManager.getPlayerEntityId(), data);
+        }
     }
 
 

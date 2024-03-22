@@ -68,6 +68,7 @@ public class SimulationCycleManager {
 //        }
 //    }
 
+
     public void endGame() {
         if (currentState != GameState.END) {
             performEndGame();
@@ -76,6 +77,10 @@ public class SimulationCycleManager {
         } else {
             System.out.println("Cannot end game. Game is already ended.");
         }
+    }
+
+    public void setCurrentStateIdle() {
+        this.currentState = GameState.IDLE;
     }
 
     public String getCurrentState() {
@@ -96,17 +101,22 @@ public class SimulationCycleManager {
         savedGames.set(currentGameIndex,current);
         gameEngine.entityManager.setLoadedEntities(new ArrayList<>());
         gameEngine.ioManager.resetKeypressedList();
+        gameEngine.sceneManager.setCurrentScene("pausescene");
         gameEngine.setScreen(new PauseScene(gameEngine,gameEngine.sceneManager.batch,gameEngine.sceneManager.font));
     }
 
     private void performResumeGame() {
         SavedGame current = savedGames.get(currentGameIndex);
-        gameEngine.setScreen(current.getScreen());
         gameEngine.entityManager.setLoadedEntities(current.getLoadedEntities());
+        gameEngine.setScreen(current.getScreen());
+        gameEngine.sceneManager.setCurrentScene("levelscene");
+
     }
 
     private void performEndGame() {
         // Logic to end the game
+        this.gameEngine.entityManager.clearAllEntities();
+        this.gameEngine.ioManager.reset();
     }
     	
  }

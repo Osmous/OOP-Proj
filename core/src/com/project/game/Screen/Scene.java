@@ -21,6 +21,12 @@ public class Scene implements com.badlogic.gdx.Screen {
         this.camera.setToOrtho(false, 1280, 720);
     }
 
+    protected Scene(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, 1280, 720);
+    }
+
     @Override
     public void show() {
 
