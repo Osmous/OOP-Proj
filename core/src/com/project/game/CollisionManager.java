@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.EntityManager;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class CollisionManager {
 
@@ -64,13 +61,15 @@ public class CollisionManager {
 
     private void handleCollision(Entity entity1, Entity entity2) {
         long currentTime = System.currentTimeMillis();
+        long entity1NextHitTime = entity1.getNextHitTime();
 
-        // Check if the player entity is on cooldown
-        if (entity1.getType().equals("player") && collisionCooldowns.containsKey(entity1.getEntityID()) && collisionCooldowns.get(entity1.getEntityID()) > currentTime) {
+
+        // Check if the player entity is on cooldown based on next hit time
+        if (entity1.getType().equals("player") && entity1NextHitTime > currentTime) {
             return; // Player entity is still on cooldown, ignore collision
         }
 
-        // Enemy or Projectile collide with Player
+        // Player entity's health reaches zero
         if (entity1.getType().equals("player")) {
             if (entity2.getType().equals("projectile") || entity2.getType().equals("enemy")) {
                 // Damage the player entity
@@ -81,28 +80,30 @@ public class CollisionManager {
                 entityManager.updateEntity("updateHealth", entity1.getEntityID(), healthData);
 
                 if (playerHealth <= 0) {
-                    entityManager.deleteEntity(entity1.getEntityID());
+                    // Delete the player entity immediately
+                    this.gameEngine.entityManager.deleteEntity(entity1.getEntityID());
+
                 }
             }
-    }
-
-        // This part is causing the application to crash when projectile and enemy entity collide
-        // Player Projectile collide with enemy
-        else if (entity1.getType().equals("projectile")) {
-           if (entity2.getType().equals("enemy")) {
-                // Delete player bullet entity
-                //entityManager.deleteEntity(entity1.getEntityID());
-
-                // Delete enemy entity
-                entityManager.deleteEntity(entity2.getEntityID());
-           }
         }
 
-        // Set cooldown for both entities
-        int cooldownDuration = 2000; // Cooldown duration in milliseconds (adjust as needed)
-        collisionCooldowns.put(entity1.getEntityID(), currentTime + cooldownDuration);
-        collisionCooldowns.put(entity2.getEntityID(), currentTime + cooldownDuration);
+        // Player Projectile collide with enemy
+        else if (entity1.getType().equals("projectile") && entity2.getType().equals("enemy")) {
+            // Mark the enemy entity for deletion
+            entityManager.deleteEntity(entity1.getEntityID());
+            entityManager.deleteEntity(entity2.getEntityID());
+        }
+
+
+
+        // Set cooldown for the player entity
+        if (entity1.getType().equals("player")) {
+            int cooldownDuration = 2000; // Cooldown duration in milliseconds (adjust as needed)
+            entity1.setNextHitTime(currentTime + cooldownDuration);
+        }
     }
+
+
 
 
     private void handleCollisionWithScreenBoundary(Entity entity, String boundary) {

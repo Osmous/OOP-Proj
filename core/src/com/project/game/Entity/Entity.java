@@ -32,7 +32,7 @@ public abstract class Entity extends Actor {
         // check variable for if for any reason cannot move in the any of the 4 directions
         // left, top , right , bottom
         this.blockedMovement = new boolean[4];
-        this.nextHitTime = 0;
+        this.nextHitTime = 2000;
         this.sprite = new Sprite(this.tex);
         sprite.setPosition(this.pos.x,this.pos.y);
     }
