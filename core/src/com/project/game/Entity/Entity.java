@@ -32,7 +32,7 @@ public abstract class Entity extends Actor {
         // check variable for if for any reason cannot move in the any of the 4 directions
         // left, top , right , bottom
         this.blockedMovement = new boolean[4];
-        this.nextHitTime = 0;
+        this.nextHitTime = 2000;
         this.sprite = new Sprite(this.tex);
         sprite.setPosition(this.pos.x,this.pos.y);
     }
@@ -54,7 +54,7 @@ public abstract class Entity extends Actor {
         this.pos.x = posX;
     }
 
-    protected void setPosY(float posY) {
+    public void setPosY(float posY) {
         this.pos.y = posY;
     }
     protected Texture getTex() {
@@ -93,7 +93,7 @@ public abstract class Entity extends Actor {
         return speed;
     }
 
-    protected void setSpeed(float speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 

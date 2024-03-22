@@ -19,7 +19,7 @@
       "health": 1,
       "texturePath": "enemy.png",
       "speed": 100,
-      "count": 1
+      "count": 6
     },
     {
       "type": "projectile",

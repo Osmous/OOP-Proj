@@ -52,6 +52,7 @@ public class GameEngine extends Game {
 		if (!ioManager.getKeypressedlist().isEmpty()){
 			playerControlManager.handleInput(ioManager.getKeypressedlist());
 		}
+
 	};
 	@Override
 	public void dispose() {
