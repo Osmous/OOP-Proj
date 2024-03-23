@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SavedGame {
+    // class to store game state
     private List<Entity> loadedEntities;
     private Screen screen;
 
@@ -21,7 +22,7 @@ public class SavedGame {
     }
 
     public void setLoadedEntities(List<Entity> loadedEntities) {
-        this.loadedEntities = loadedEntities;
+        this.loadedEntities = new ArrayList<>(loadedEntities);
     }
 
     public Screen getScreen() {

@@ -14,26 +14,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.project.game.GameEngine;
 
-import static com.badlogic.gdx.utils.Align.topLeft;
-
-public class PauseScene extends Scene{
+public class EndScene extends Scene{
 
     private Stage stage;
 
-    public PauseScene(GameEngine gameEngine, SpriteBatch batch) {
+    public EndScene(GameEngine gameEngine, SpriteBatch batch) {
         super(gameEngine, batch);
     }
 
     public void show() {
-        // see EndScene for code comments. its all the same except the edits seen here
+        // new stage to handle actors, meaning table grid holding buttons and text
         stage = new Stage(new ScreenViewport());
-        //set input processor to both Stage and Iomanager to allow for on screen button click event handling and
-        //using keyboard inputs as a way to unpuase (ESC key)
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(gameEngine.ioManager.getInputHandler());
-        Gdx.input.setInputProcessor(multiplexer);
-
+        Gdx.input.setInputProcessor(stage);
+        // assets file
         Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
@@ -51,21 +44,25 @@ public class PauseScene extends Scene{
         table.add(MuteButton).pad(10);
         table.row();
 
-        Label titleLabel = new Label("Paused", skin);
+        // screen title display
+        Label titleLabel = new Label("YOU WIN", skin);
         titleLabel.setFontScale(2);
         table.add(titleLabel).padBottom(20);
         table.row();
 
-        TextButton ResumeButton = new TextButton("Resume", skin);
+        // init buttons
+        TextButton mainMenuButton = new TextButton("Main menu", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
-        ResumeButton.addListener(new ChangeListener() {
+        // add event listener to button
+        // check for any state change to the button
+        mainMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
                 // hand back control to iomanager for game control
                 Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
-                gameEngine.sceneManager.setCurrentScene("levelscene");
-                gameEngine.simulationCycleManager.pauseGame();
+                gameEngine.sceneManager.setMainScreen();
+                gameEngine.simulationCycleManager.setCurrentStateIdle();
             }
         });
 
@@ -76,7 +73,7 @@ public class PauseScene extends Scene{
             }
         });
 
-        table.add(ResumeButton).fillX().uniformX();
+        table.add(mainMenuButton).fillX().uniformX();
         table.row().pad(10, 0, 10, 0);
         table.add(exitButton).fillX().uniformX();
     }

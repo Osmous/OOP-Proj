@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class MainMenuScene extends Scene {
     private Stage stage;
 
-    public MainMenuScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
-        super(gameEngine, batch, font);
+    public MainMenuScene(GameEngine gameEngine, SpriteBatch batch) {
+        super(gameEngine, batch);
     }
 
     @Override
@@ -29,11 +29,21 @@ public class MainMenuScene extends Scene {
         // see any implementation of io manager can do this
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+        TextButton MuteButton = new TextButton("Mute BGM", skin);
+        MuteButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+                // hand back control to iomanager for game control
+                gameEngine.ioManager.playBGM();
+            }
+        });
+        table.add(MuteButton).pad(10);
+        table.row();
 
         Label titleLabel = new Label("Space Game", skin);
         titleLabel.setFontScale(2); // Increase the font size (optional)
@@ -47,9 +57,11 @@ public class MainMenuScene extends Scene {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
                 // hand back control to iomanager for game control
-                Gdx.input.setInputProcessor(gameEngine.ioManager);
+                Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
                 gameEngine.sceneManager.setCurrentScene("levelscene");
-                gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath()));
+                int levelNum=gameEngine.sceneManager.getLevelNum();
+                gameEngine.sceneManager.setLevelNum(levelNum+1);
+                gameEngine.setScreen(new LevelScene(gameEngine, batch, gameEngine.sceneManager.getLevelScenePath(String.valueOf(levelNum+1))));
             }
         });
 
@@ -96,6 +108,7 @@ public class MainMenuScene extends Scene {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        super.resize(width,height);
+//        stage.getViewport().update(width, height, true);
     }
 }

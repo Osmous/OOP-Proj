@@ -32,13 +32,12 @@ public abstract class Entity extends Actor {
         // check variable for if for any reason cannot move in the any of the 4 directions
         // left, top , right , bottom
         this.blockedMovement = new boolean[4];
-        this.nextHitTime = 0;
+        this.nextHitTime = 2000;
         this.sprite = new Sprite(this.tex);
         sprite.setPosition(this.pos.x,this.pos.y);
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        batch.draw(this.tex, this.pos.x, this.pos.y, this.rec.width, this.rec.height);
         sprite.setPosition(this.pos.x,this.pos.y);
         sprite.draw(batch);
     }
@@ -48,13 +47,13 @@ public abstract class Entity extends Actor {
         // Here you can add logic that needs to run each frame, if necessary
     }
     protected void dispose(){
-        this.tex.dispose();
+        super.remove();
     }
-        protected void setPosX(float posX) {
+    protected void setPosX(float posX) {
         this.pos.x = posX;
     }
 
-    protected void setPosY(float posY) {
+    public void setPosY(float posY) {
         this.pos.y = posY;
     }
     protected Texture getTex() {
@@ -88,14 +87,12 @@ public abstract class Entity extends Actor {
     protected void setRec(Rectangle rec) {
         this.rec = rec;
     }
-
-    protected void renderEntity(SpriteBatch batch) {
-    }
+    
     public float getSpeed() {
         return speed;
     }
 
-    protected void setSpeed(float speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
@@ -132,5 +129,8 @@ public abstract class Entity extends Actor {
         this.rotation = rotation;
         sprite.setRotation(this.rotation);
         super.setRotation(rotation);
+    }
+    public Sprite getSprite() {
+        return sprite;
     }
 }

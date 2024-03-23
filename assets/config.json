@@ -1,5 +1,25 @@
 {
   "levelPath": {
-    "level1": "level1.json"
+    "1": "level1.json",
+    "2": "level2.json"
+  },
+  "endLevel": 2,
+  "sounds": {
+    "explosion": "sounds/explosion.wav",
+    "shoot": "sounds/shoot.wav",
+    "playerDamage": "sounds/playerDamage.wav",
+    "bgMusic": "sounds/bgMusic.wav"
+  },
+  "explosionTexture": "explosion.png",
+  "skinPathJson": "starsoldierui/star-soldier-ui.json",
+  "projectileData":
+  {
+    "type": "projectile",
+    "posX": 0,
+    "posY": 0,
+    "texturePath": "bullet.png",
+    "speed": 400,
+    "mousePosX": 0,
+    "mousePosY": 0
   }
 }

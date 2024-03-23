@@ -1,14 +1,18 @@
 package com.project.game.SimulationLifeCycle;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.project.game.Entity.Entity;
+import com.project.game.Entity.PlayerEntity;
 import com.project.game.GameEngine;
+import com.project.game.Screen.LevelScene;
 import com.project.game.Screen.PauseScene;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-//dk if correct or not hehe. just testing LOL 
+//dk if correct or not hehe. just testing LOL
 
 public class SimulationCycleManager {
     private GameEngine gameEngine;
@@ -68,6 +72,7 @@ public class SimulationCycleManager {
 //        }
 //    }
 
+
     public void endGame() {
         if (currentState != GameState.END) {
             performEndGame();
@@ -76,6 +81,10 @@ public class SimulationCycleManager {
         } else {
             System.out.println("Cannot end game. Game is already ended.");
         }
+    }
+
+    public void setCurrentStateIdle() {
+        this.currentState = GameState.IDLE;
     }
 
     public String getCurrentState() {
@@ -91,25 +100,36 @@ public class SimulationCycleManager {
     private void performPauseGame() {
         // Logic to pause the game
         SavedGame current = savedGames.get(currentGameIndex);
-        current.setScreen(gameEngine.getScreen());
+        // save level scene
+        current.setScreen(gameEngine.sceneManager.getScreen());
+        // save loaded entities
         current.setLoadedEntities(gameEngine.entityManager.getLoadedEntity());
         savedGames.set(currentGameIndex,current);
-        gameEngine.entityManager.setLoadedEntities(new ArrayList<>());
+
         gameEngine.ioManager.resetKeypressedList();
         gameEngine.sceneManager.setCurrentScene("pausescene");
-        gameEngine.setScreen(new PauseScene(gameEngine,gameEngine.sceneManager.batch,gameEngine.sceneManager.font));
+        // switch to pause scene
+        gameEngine.setScreen(new PauseScene(gameEngine,gameEngine.sceneManager.batch));
     }
 
     private void performResumeGame() {
         SavedGame current = savedGames.get(currentGameIndex);
+        // load saved entites into enitiymanager loadedentity array
         gameEngine.entityManager.setLoadedEntities(current.getLoadedEntities());
+        // set stored scene into active scene
         gameEngine.setScreen(current.getScreen());
+        // re add every entity into active scene stage as actors
+        for (Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
+            ((LevelScene)gameEngine.getScreen()).getStage().addActor(entity);
+        }
         gameEngine.sceneManager.setCurrentScene("levelscene");
 
     }
 
     private void performEndGame() {
         // Logic to end the game
+        this.gameEngine.entityManager.clearAllEntities();
+        this.gameEngine.ioManager.resetKeypressedList();
     }
-    	
+
  }

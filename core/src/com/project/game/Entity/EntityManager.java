@@ -7,60 +7,42 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.math.Rectangle;
+import com.project.game.GameEngine;
+import com.project.game.Screen.LevelScene;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class EntityManager {
-    private List<Entity> loadedEntities;
-    private int nextID;
+    protected List<Entity> loadedEntities;
+    protected int nextID;
+    private GameEngine gameEngine;
 
-    public EntityManager() {
+    protected EntityFactory entityFactory;
+
+    public EntityManager(GameEngine gameEngine) {
+        this.gameEngine = gameEngine;
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID = 0;
+        this.entityFactory = new EntityFactory();
     }
 
     public void createEntity(JsonValue parameters) {
-        Texture tex;
-        Rectangle rec;
-        switch (parameters.getString("type")){
-            case ("player"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-                rec = new Rectangle();
-                rec.height = tex.getHeight();
-                rec.width = tex.getWidth();
-                PlayerEntity player = new PlayerEntity(this.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
-                this.loadedEntities.add(player);
-                break;
-            case ("enemy"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-                rec = new Rectangle();
-                rec.height = tex.getHeight();
-                rec.width = tex.getWidth();
-                EnemyEntity enemy = new EnemyEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"));
-                this.loadedEntities.add(enemy);
-                break;
-            case ("bullet"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
-                rec = new Rectangle();
-                rec.height = tex.getHeight();
-                rec.width = tex.getWidth();
-                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(500, 500));
-//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
-                this.loadedEntities.add(bullet);
-                break;
-        }
-        this.nextID++;
+        // entity factory for creating entities
+        // factory design pattern requirement for project part 2
+        this.loadedEntities.add(entityFactory.createEntity(parameters,this.gameEngine));
     }
 
     public void updateEntity(String operation, int entityID, Map<String, Object> params) {
+        // loop to check for entity ID then edit said entity
         for (Entity entity : loadedEntities) {
             if (entity.getEntityID() == entityID) {
+                // depends on what operation needed
+                // params defer based on what operation is passed into
                 switch (operation) {
                     case ("moveX"):
+                        // move by delta position (position increment calculation done at playercontrolmanager
+                        // entity blocked movement for screen border control. set at collision manager
                         if (!(entity.getBlockedMovement()[0] && (float) params.get("deltaMovement")<0 || entity.getBlockedMovement()[2] && (float) params.get("deltaMovement")>0)){
                             entity.setPosX(entity.getPos().x + (float) params.get("deltaMovement"));
                             entity.setBlockedMovement(0, false);
@@ -68,6 +50,7 @@ public class EntityManager {
                         }
                         break;
                     case ("moveY"):
+                        // same as move X but for Y axis
                         if (!(entity.getBlockedMovement()[3] && (float) params.get("deltaMovement")<0 || entity.getBlockedMovement()[1] && (float) params.get("deltaMovement")>0)){
                             entity.setPosY(entity.getPos().y + (float)params.get("deltaMovement"));
                             entity.setBlockedMovement(3, false);
@@ -75,38 +58,44 @@ public class EntityManager {
                         }
                         break;
                     case ("setBlockedMovement"):
+                        // called at collision manager to lock movement
                         entity.setBlockedMovement((int) params.get("id"), (boolean) params.get("state"));
                         break;
                     case ("rotatePlayer"):
+                        // called at player control to change the player position
                         Vector2 direction = (Vector2) params.get("direction");
                         entity.setRotation(direction.angleDeg());
                         break;
-
+                    case ("updateHealth"):
+                        // called at collision manager
+                        ((CharacterEntity) entity).setHealth((int) params.get("health"));
+                        break;
+                    case ("playerHitFlash"):
+                        // called at collision manager
+                        ((PlayerEntity) entity).startFlashing();
+                        break;
+                    default:
+                        return;
                 }
                 return;
             }
         }
     }
-    public void renderEntity(SpriteBatch batch){
-        batch.begin();
-        for (Entity entity : this.loadedEntities) {
-            entity.renderEntity(batch);
-        }
-        batch.end();
-    }
 
     public void deleteEntity(int entityID) {
-        // todo
-//        loadedEntities.removeIf(entity -> entity.getEntityID() == entityID);
-
+        // delete entity based on id
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
             if (entity.getEntityID() == entityID) {
+                // dispose of entity assets and entity actor from stage
+                entity.dispose();
                 iter.remove();
             }
         }
     }
     public void updateEnemyRotation(){
+        // simple wrapper to update all enemy rotation
+        // called at AI control manager
         Vector2 playerPos = null;
         for (Entity entity : this.loadedEntities) {
             if (entity.getType().equals("player")){
@@ -117,6 +106,7 @@ public class EntityManager {
         if(playerPos != null) {
             for (Entity entity : this.loadedEntities) {
                 if (entity.getType().equals("enemy")) {
+                    // calculate direction from enemy to player
                     Vector2 direction = new Vector2(playerPos.x - entity.pos.x, playerPos.y - entity.pos.y);
                     entity.setRotation(direction.angleDeg());
                 }
@@ -163,15 +153,26 @@ public class EntityManager {
     }
 
     public void clearAllEntities(){
-        for(Entity entity: this.loadedEntities){
+        for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
+            Entity entity = iter.next();
+            // dispose of entity assets and entity actor from stage
             entity.dispose();
+            iter.remove();
         }
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID=0;
     }
 
     public void setLoadedEntities(List<Entity> loadentity){
-        this.loadedEntities=loadentity;
-
+        // function mainly for pause unpause feature
+        // see performResumeGame in simulation lifecycle
+        for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
+            Entity entity = iter.next();
+            // dispose of entity assets and entity actor from stage
+            // ensures that stage is clean of entities before loading entities again
+            entity.dispose();
+            iter.remove();
+        }
+        this.loadedEntities=new ArrayList<>(loadentity);
     }
 }

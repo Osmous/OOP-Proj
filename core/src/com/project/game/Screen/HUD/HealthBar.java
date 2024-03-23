@@ -8,11 +8,9 @@ import com.badlogic.gdx.utils.Align;
 public class HealthBar extends Group {
     private final Texture heartTexture;
     private int maxHealth;
-    private int currentHealth;
 
     public HealthBar(int maxHealth) {
         this.maxHealth = maxHealth;
-        this.currentHealth = maxHealth; // Initial health
         heartTexture = new Texture("heart.png"); // Load the heart texture
 
         for (int i = 0; i < maxHealth; i++) {
@@ -25,7 +23,6 @@ public class HealthBar extends Group {
     public void setHealth(int health) {
         if (health > maxHealth) health = maxHealth;
         if (health < 0) health = 0;
-        this.currentHealth = health;
 
         for (int i = 0; i < this.getChildren().size; i++) {
             this.getChildren().get(i).setVisible(i < health); // Show or hide hearts based on health
