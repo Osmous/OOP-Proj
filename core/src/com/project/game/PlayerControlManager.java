@@ -3,6 +3,7 @@ package com.project.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,12 +65,20 @@ public class PlayerControlManager {
     }
 
     // Shoot function (create a projectile entity)
-    /* public void shoot(Vector2 mousePosition) {
-        // Create projectile entity at the player's position
-        gameEngine.entityManager.createEntity(playerPos, mousePosition);
-    }
-    */
+    public void shoot(Vector2 mousePosition) {
+        // Get projectile data as JsonValue object
+        JsonValue projectileData = this.gameEngine.config.get("projectileData");
 
+        // Edit the JsonValue projectileData
+        (projectileData.get("posX")).set(String.valueOf(playerPos.x));
+        (projectileData.get("posY")).set(String.valueOf(playerPos.y));
+        (projectileData.get("mousePosX")).set(String.valueOf(mousePosition.x));
+        (projectileData.get("mousePosY")).set(String.valueOf(mousePosition.y));
+
+        // Create projectile entity at the player's position with the updated projectile data
+        gameEngine.entityManager.createEntity(playerPos, mousePosition, projectileData);
+    }
+    
         // Method to handle key input and move player accordingly
         // Takes additional parameter of playerPos of type Vector2 to represent the position of the player obtained from entityManager.getPlayerPos() method
         public void handleInput(List<String> keyCodeList) {
