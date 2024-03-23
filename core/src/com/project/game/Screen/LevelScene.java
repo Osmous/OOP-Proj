@@ -49,17 +49,21 @@ public class LevelScene extends Scene {
     }
 
     public void show() {
-        if(!this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSED")) {
-            stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ScreenViewport());
 
-            //set input processer for level to ioManager
-            Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
+        //set input processer for level to ioManager
+        Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
 
-            Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
 
-            backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            stage.addActor(backgroundImage);
+        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.addActor(backgroundImage);
 
+        // if statement to check if show() is called after resuming game from pause state
+        // see pauseGame and performResumeGame in Simulation lifecycle.
+        // this works because this show() function is called in setScreen which is called before simulationlifecycle
+        // changes the gameState enum variable.
+        if (!this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE")) {
             // call entityManager to create non enemy entity
             for (JsonValue entitydata : this.levelData.get("entities")) {
                 if (!entitydata.getString("type").equals("enemy")) {
@@ -70,24 +74,18 @@ public class LevelScene extends Scene {
                     enemyCount = entitydata.getInt("count");
                 }
             }
-
-//        for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()){
-//            stage.addActor(entity);
-//        }
-
-            Table table = new Table();
-            table.setFillParent(true);
-            stage.addActor(table);
-
-            Label titleLabel = new Label("health", skin);
-            table.add(titleLabel).fill().uniform();
-
-            healthBar = new HealthBar(gameEngine.entityManager.getPlayerHealth());
-            table.add(healthBar).fill().uniform().padLeft(5);
-            table.top().left().padTop(5);
         }
-    }
+        Table table = new Table();
+        table.setFillParent(true);
+        stage.addActor(table);
 
+        Label titleLabel = new Label("health", skin);
+        table.add(titleLabel).fill().uniform();
+
+        healthBar = new HealthBar(gameEngine.entityManager.getPlayerHealth());
+        table.add(healthBar).fill().uniform().padLeft(5);
+        table.top().left().padTop(5);
+    }
     @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -177,4 +175,5 @@ public class LevelScene extends Scene {
     public int getEnemyCount() {
         return enemyCount;
     }
+
 }

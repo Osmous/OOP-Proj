@@ -150,8 +150,10 @@ public class EntityManager {
     }
 
     public void clearAllEntities(){
-        for(Entity entity: this.loadedEntities){
+        for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
+            Entity entity = iter.next();
             entity.dispose();
+            iter.remove();
         }
         this.loadedEntities = new ArrayList<Entity>();
         this.nextID=0;
@@ -163,10 +165,6 @@ public class EntityManager {
             entity.dispose();
             iter.remove();
         }
-//        this.nextID=0;
-        this.loadedEntities=loadentity;
-//        for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()){
-//            ((LevelScene)gameEngine.sceneManager.getScreen()).getStage().addActor(entity);
-//        }
+        this.loadedEntities=new ArrayList<>(loadentity);
     }
 }

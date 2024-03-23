@@ -21,7 +21,7 @@ public class SavedGame {
     }
 
     public void setLoadedEntities(List<Entity> loadedEntities) {
-        this.loadedEntities = loadedEntities;
+        this.loadedEntities = new ArrayList<>(loadedEntities);
     }
 
     public Screen getScreen() {

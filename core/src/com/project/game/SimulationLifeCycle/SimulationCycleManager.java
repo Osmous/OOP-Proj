@@ -2,6 +2,8 @@ package com.project.game.SimulationLifeCycle;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.project.game.Entity.Entity;
+import com.project.game.Entity.PlayerEntity;
 import com.project.game.GameEngine;
 import com.project.game.Screen.LevelScene;
 import com.project.game.Screen.PauseScene;
@@ -98,20 +100,28 @@ public class SimulationCycleManager {
     private void performPauseGame() {
         // Logic to pause the game
         SavedGame current = savedGames.get(currentGameIndex);
+        // save level scene
         current.setScreen(gameEngine.sceneManager.getScreen());
+        // save loaded entities
         current.setLoadedEntities(gameEngine.entityManager.getLoadedEntity());
         savedGames.set(currentGameIndex,current);
 
-//        gameEngine.entityManager.setLoadedEntities(new ArrayList<>());
         gameEngine.ioManager.resetKeypressedList();
         gameEngine.sceneManager.setCurrentScene("pausescene");
+        // switch to pause scene
         gameEngine.setScreen(new PauseScene(gameEngine,gameEngine.sceneManager.batch));
     }
 
     private void performResumeGame() {
         SavedGame current = savedGames.get(currentGameIndex);
+        // load saved entites into enitiymanager loadedentity array
         gameEngine.entityManager.setLoadedEntities(current.getLoadedEntities());
+        // set stored scene into active scene
         gameEngine.setScreen(current.getScreen());
+        // re add every entity into active scene stage as actors
+        for (Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
+            ((LevelScene)gameEngine.getScreen()).getStage().addActor(entity);
+        }
         gameEngine.sceneManager.setCurrentScene("levelscene");
 
     }
