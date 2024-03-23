@@ -16,7 +16,7 @@ public class EntityFactory {
         Entity entity;
         switch (parameters.getString("type")){
             case ("player"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                tex = new Texture(Gdx.files.local(parameters.getString("texturePath")));
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
@@ -24,7 +24,7 @@ public class EntityFactory {
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
                 break;
             case ("enemy"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                tex = new Texture(Gdx.files.local(parameters.getString("texturePath")));
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
@@ -32,7 +32,7 @@ public class EntityFactory {
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
                 break;
             case ("projectile"):
-                tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
+                tex = new Texture(Gdx.files.local(parameters.getString("texturePath")));
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();

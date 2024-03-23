@@ -27,7 +27,7 @@ public class EndScene extends Scene{
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         // assets file
-        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
+        Skin skin = new Skin(Gdx.files.local(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);

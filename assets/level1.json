@@ -1,6 +1,6 @@
 {
   "backgroundcolour": [32, 161, 47, 255],
-  "backgroundimage": "level_background.jpeg",
+  "backgroundimage": "assets/level_background.jpeg",
   "spawnintervalmillis": 3000,
   "maxspawnlimitperinterval": 3,
   "entities": [
@@ -8,7 +8,7 @@
       "type": "player",
       "posX": 200,
       "posY": 200,
-      "texturePath": "player.png",
+      "texturePath": "assets/player.png",
       "speed": 200,
       "health": 5
     },
@@ -17,7 +17,7 @@
       "posX": 100,
       "posY": 100,
       "health": 1,
-      "texturePath": "enemy.png",
+      "texturePath": "assets/enemy.png",
       "speed": 100,
       "count": 10
     }

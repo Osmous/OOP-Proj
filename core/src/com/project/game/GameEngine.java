@@ -23,13 +23,13 @@ public class GameEngine extends Game {
 	public void loadConfig(){
 		//load game specific configs.
 		JsonReader json = new JsonReader();
-		this.config = json.parse(Gdx.files.internal(this.gameConfigPath));
+		this.config = json.parse(Gdx.files.local(this.gameConfigPath));
 
 	}
 	@Override
 	public void create() {
 		// load global configs for game
-		gameConfigPath = "config.json";
+		gameConfigPath = "assets/config.json";
 		loadConfig();
 
 		// Init all managers

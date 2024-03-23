@@ -34,7 +34,7 @@ public class PauseScene extends Scene{
         multiplexer.addProcessor(gameEngine.ioManager.getInputHandler());
         Gdx.input.setInputProcessor(multiplexer);
 
-        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
+        Skin skin = new Skin(Gdx.files.local(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);

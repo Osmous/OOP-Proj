@@ -39,11 +39,11 @@ public class LevelScene extends Scene {
         super(gameEngine, batch);
         // load level data from json file.
         JsonReader json = new JsonReader();
-        this.levelData = json.parse(Gdx.files.internal(levelPath));
+        this.levelData = json.parse(Gdx.files.local(levelPath));
         this.spawnIntveral = this.levelData.getInt("spawnintervalmillis");
         nextSpawnTime=0;
 
-        backgroundTexture = new Texture(Gdx.files.internal(this.levelData.getString("backgroundimage")));
+        backgroundTexture = new Texture(Gdx.files.local(this.levelData.getString("backgroundimage")));
         backgroundImage = new Image(backgroundTexture);
 
     }
@@ -54,7 +54,7 @@ public class LevelScene extends Scene {
         //set input processer for level to ioManager
         Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
 
-        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
+        Skin skin = new Skin(Gdx.files.local(this.gameEngine.config.getString("skinPathJson")));
 
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);

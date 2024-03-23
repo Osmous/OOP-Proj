@@ -17,12 +17,12 @@ public class AudioHandler {
         this.gameEngine= gameEngine;
         this.sounds = new HashMap<>();
         // set background music
-        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(this.gameEngine.config.get("sounds").getString("bgMusic")));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.local(this.gameEngine.config.get("sounds").getString("bgMusic")));
         backgroundMusic.setLooping(true);
         backgroundMusic.play();
         // initalise all sound fx and store each sound into map
         for (JsonValue child = this.gameEngine.config.get("sounds").child(); child != null; child = child.next()) {
-            sounds.put(child.name, Gdx.audio.newSound(Gdx.files.internal(child.asString())));
+            sounds.put(child.name, Gdx.audio.newSound(Gdx.files.local(child.asString())));
         }
     }
 
