@@ -11,6 +11,7 @@
     "bgMusic": "sounds/bgMusic.wav"
   },
   "explosionTexture": "explosion.png",
+  "skinPathJson": "starsoldierui/star-soldier-ui.json",
   "projectileData":
   {
     "type": "projectile",

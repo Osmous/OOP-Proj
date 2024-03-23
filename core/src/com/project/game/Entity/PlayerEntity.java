@@ -22,10 +22,11 @@ public class PlayerEntity extends CharacterEntity {
     }
     @Override
     public void act(float deltaTime) {
+        // player on contact with enemy flash logic
         if (isFlashing) {
             flashTimer += deltaTime;
 
-            // Calculate the alpha value based on the flash timer
+            // Calculate the alpha value based on the flash timer (1 or 0)
             float alpha = ((int)(flashTimer / FLASH_INTERVAL) % 2 == 0) ? 0.0f : 1.0f;
             sprite.setAlpha(alpha);
 

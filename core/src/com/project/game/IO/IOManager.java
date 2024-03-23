@@ -5,15 +5,15 @@ import com.project.game.GameEngine;
 import java.util.List;
 
 public class IOManager {
-    private GameEngine gameEngine;
+    protected GameEngine gameEngine;
     protected InputHandler inputHandler;
     protected AudioHandler audioHandler;
 
 
     public IOManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        this.inputHandler = new InputHandler(gameEngine);
-        this.audioHandler = new AudioHandler(gameEngine);
+        this.inputHandler = new InputHandler(this.gameEngine);
+        this.audioHandler = new AudioHandler(this.gameEngine);
     }
 
     public InputHandler getInputHandler() {
@@ -34,5 +34,6 @@ public class IOManager {
     public void playSound(String sound){
         this.audioHandler.playSound(sound);
     }
+    public void playBGM(){this.audioHandler.playBGM();}
 
 }

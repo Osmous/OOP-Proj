@@ -17,15 +17,11 @@ public class SceneManager {
     private String currentScene;
     private int levelNum;
     public SpriteBatch batch;
-    public BitmapFont font;
 
     public SceneManager(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
-        //set batch and font style
         batch = new SpriteBatch();
-        font = new BitmapFont();
         levelNum=0;
-
     }
 
     public void setMainScreen() {
@@ -38,7 +34,8 @@ public class SceneManager {
         // just so i can put render here and not do a super.render() in game engine
         if (gameEngine.getScreen() != null) gameEngine.getScreen().render(Gdx.graphics.getDeltaTime());
 
-        // check if level scene is active, then handle all ai control and update of enemy roation
+        // check if level scene is active, then handle all ai control and next level check
+        // enemy rotation update is done in aicontrolmanager.updateAI()
         if (currentScene.equals("levelscene")) {
             // entity rendering called under levelscene.java as stage.draw()
             // actual entity rendering code under Entity.java as draw() function
@@ -79,6 +76,7 @@ public class SceneManager {
         if (flag){
             // check if level is last level
             if(levelNum == this.gameEngine.config.getInt("endLevel")){
+                // transition to win scene
                 currentScene = "endscene";
                 levelNum=0;
                 gameEngine.getScreen().dispose();
@@ -86,6 +84,7 @@ public class SceneManager {
                 gameEngine.simulationCycleManager.endGame();
                 return;
             }
+            // transition to next Level
             levelNum = levelNum +1;
             gameEngine.getScreen().dispose();
             gameEngine.setScreen(new LevelScene(gameEngine, batch, getLevelScenePath(String.valueOf(levelNum))));
@@ -93,6 +92,8 @@ public class SceneManager {
     }
 
     public void explosion(Vector2 pos){
+        // generate explosion animation at given position
+        // Explosion actor will self remove once animation is complete
         ExplosionActor explosion = new ExplosionActor(gameEngine.config.getString("explosionTexture"));
         explosion.setPosition(pos.x, pos.y);
         ((LevelScene)gameEngine.getScreen()).getStage().addActor(explosion);
@@ -111,11 +112,6 @@ public class SceneManager {
     }
 
     public String getLevelScenePath(String name){
-//        if(currentScene.equals("levelScene")){
-//            // this is a place holder for having multiple levels based on idk some condition. for now set to hard code level1.
-//            // add more level.json files and add them to the config.json path
-//            return this.gameEngine.config.get("levelPath").getString("level1");
-//        }
         return this.gameEngine.config.get("levelPath").getString(name);
     }
 

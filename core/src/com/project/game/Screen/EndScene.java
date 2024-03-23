@@ -27,11 +27,22 @@ public class EndScene extends Scene{
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         // assets file
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+
+        TextButton MuteButton = new TextButton("Mute BGM", skin);
+        MuteButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+                // hand back control to iomanager for game control
+                gameEngine.ioManager.playBGM();
+            }
+        });
+        table.add(MuteButton).pad(10);
+        table.row();
 
         // screen title display
         Label titleLabel = new Label("YOU WIN", skin);
@@ -44,6 +55,7 @@ public class EndScene extends Scene{
         TextButton exitButton = new TextButton("Exit", skin);
 
         // add event listener to button
+        // check for any state change to the button
         mainMenuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {

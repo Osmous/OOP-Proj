@@ -54,7 +54,7 @@ public class LevelScene extends Scene {
         //set input processer for level to ioManager
         Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
 
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
@@ -82,6 +82,7 @@ public class LevelScene extends Scene {
         Label titleLabel = new Label("health", skin);
         table.add(titleLabel).fill().uniform();
 
+        // add healthbar overlay
         healthBar = new HealthBar(gameEngine.entityManager.getPlayerHealth());
         table.add(healthBar).fill().uniform().padLeft(5);
         table.top().left().padTop(5);
@@ -112,17 +113,28 @@ public class LevelScene extends Scene {
     }
 
     public void spawnEnemy(){
+        // spawn mechanics
+        // if enemy left to spawn count is 0 then return
         if (enemyCount==0){
             return;
         }
+        // initalise random
+        // spawning mechanics based on a 3x3 grid
+        //  1,3 | 2,3 | 3,3
+        //  1,2 | 2,2 | 3,2
+        //  1,1 | 2,1 | 3,1
+        //  2,2 is the visable screen, so this is marked as not spawnable so enemies will only spawn off screen and move
+        //  into the screen. xG variable for the column number(first number), yG variable for the row number(2nd number)
         Random rand = new Random();
         int xG;
         int yG;
         int posX = 0;
         int posY = 0;
-
+        // check if it is time to spawn enemy
         if (System.currentTimeMillis()>nextSpawnTime){
+            // determine spawn number for this iteration
             int spawncount = rand.nextInt(this.levelData.getInt("maxspawnlimitperinterval"))+1;
+            // if spawn count is more than enemy remaining spawns then set spawn to enemy remaining spawn count
             if (spawncount>enemyCount){
                 spawncount=enemyCount;
             }
@@ -130,11 +142,12 @@ public class LevelScene extends Scene {
                 while(true){
                     xG=rand.nextInt(3)+1;
                     yG=rand.nextInt(3)+1;
+                    // if group 2,2 is selected (visable screen) then reroll the spawn group
                     if(!(xG ==2 && yG==2)){
                         break;
                     }
                 }
-
+                // based on which group selected calculate x spawn position
                 switch (xG){
                     case(1):
                         posX = -rand.nextInt((int)stage.getWidth()/5);
@@ -146,6 +159,7 @@ public class LevelScene extends Scene {
                         posX =(int)(stage.getWidth())+rand.nextInt((int)stage.getWidth()/5);
                         break;
                 }
+                // based on which group selected calculate y spawn position
                 switch (yG){
                     case(1):
                         posY = -rand.nextInt((int)stage.getHeight()/5);
@@ -157,23 +171,30 @@ public class LevelScene extends Scene {
                         posY =(int)(stage.getHeight())+rand.nextInt((int)stage.getHeight()/5);
                         break;
                 }
+                // edit enemy data spawn position
                 JsonValue holder;
                 holder = enemyData.get("posX");
                 holder.set(String.valueOf(posX));
                 holder = enemyData.get("posY");
                 holder.set(String.valueOf(posY));
+                // create entity at spawn position
                 this.gameEngine.entityManager.createEntity(enemyData);
             }
-            for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()) {
-                stage.addActor(entity);
-            }
-                enemyCount= enemyCount-spawncount;
+            // update enemy spawns remaining
+            enemyCount= enemyCount-spawncount;
+            // update next spawn time
             nextSpawnTime = System.currentTimeMillis()+spawnIntveral;
         }
     }
 
     public int getEnemyCount() {
         return enemyCount;
+    }
+
+    @Override
+    public void dispose(){
+        super.dispose();
+        healthBar.dispose();
     }
 
 }

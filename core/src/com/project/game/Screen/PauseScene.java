@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.project.game.GameEngine;
 
+import static com.badlogic.gdx.utils.Align.topLeft;
+
 public class PauseScene extends Scene{
 
     private Stage stage;
@@ -23,6 +25,7 @@ public class PauseScene extends Scene{
     }
 
     public void show() {
+        // see EndScene for code comments. its all the same except the edits seen here
         stage = new Stage(new ScreenViewport());
         //set input processor to both Stage and Iomanager to allow for on screen button click event handling and
         //using keyboard inputs as a way to unpuase (ESC key)
@@ -31,11 +34,22 @@ public class PauseScene extends Scene{
         multiplexer.addProcessor(gameEngine.ioManager.getInputHandler());
         Gdx.input.setInputProcessor(multiplexer);
 
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+
+        TextButton MuteButton = new TextButton("Mute BGM", skin);
+        MuteButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+                // hand back control to iomanager for game control
+                gameEngine.ioManager.playBGM();
+            }
+        });
+        table.add(MuteButton).pad(10);
+        table.row();
 
         Label titleLabel = new Label("Paused", skin);
         titleLabel.setFontScale(2);

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SavedGame {
+    // class to store game state
     private List<Entity> loadedEntities;
     private Screen screen;
 

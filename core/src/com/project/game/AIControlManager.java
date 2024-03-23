@@ -20,6 +20,7 @@ public class AIControlManager {
 
         float delta = Gdx.graphics.getDeltaTime();
 
+        // movement code decider for any non player entities
         for (Entity entity : gameEngine.entityManager.getLoadedEntity()) {
             if (entity.getType().equals("enemy")) {
                 generateEnemyMovement((EnemyEntity) entity, playerPosition, delta);
@@ -52,7 +53,6 @@ public class AIControlManager {
         float deltaY = projectile.getDirection().y * projectile.getSpeed() * delta;
 
         // Move the projectile
-//        projectile.moveBy(deltaX, deltaY);
         Map<String, Object> data = new HashMap<>();
         data.put("deltaMovement", deltaX);
         gameEngine.entityManager.updateEntity("moveX", projectile.getEntityID(), data);

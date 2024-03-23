@@ -13,25 +13,31 @@ public class AudioHandler {
     private GameEngine gameEngine;
     private Map<String, Sound> sounds;
     private Music backgroundMusic;
-    public AudioHandler(GameEngine gameEngine) {
+    protected AudioHandler(GameEngine gameEngine) {
         this.gameEngine= gameEngine;
         this.sounds = new HashMap<>();
-//        this.isButtonPressed = false;
-//        System.out.println(this.gameEngine.config.get("sounds").child());
+        // set background music
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(this.gameEngine.config.get("sounds").getString("bgMusic")));
         backgroundMusic.setLooping(true);
         backgroundMusic.play();
+        // initalise all sound fx and store each sound into map
         for (JsonValue child = this.gameEngine.config.get("sounds").child(); child != null; child = child.next()) {
-//            System.out.println(child.asString());
             sounds.put(child.name, Gdx.audio.newSound(Gdx.files.internal(child.asString())));
         }
-//        System.out.println(sounds);
     }
 
-    public void playSound(String sound){
+    protected void playSound(String sound){
         Sound gdxSound = sounds.get(sound);
         if (gdxSound !=null){
             gdxSound.play();
         }
     }
+    protected void playBGM(){
+        if(backgroundMusic.isPlaying()){
+            backgroundMusic.stop();
+        }else{
+            backgroundMusic.play();
+        }
+    }
+
 }

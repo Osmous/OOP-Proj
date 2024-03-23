@@ -83,9 +83,11 @@ public class EntityManager {
     }
 
     public void deleteEntity(int entityID) {
+        // delete entity based on id
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
             if (entity.getEntityID() == entityID) {
+                // dispose of entity assets and entity actor from stage
                 entity.dispose();
                 iter.remove();
             }
@@ -104,6 +106,7 @@ public class EntityManager {
         if(playerPos != null) {
             for (Entity entity : this.loadedEntities) {
                 if (entity.getType().equals("enemy")) {
+                    // calculate direction from enemy to player
                     Vector2 direction = new Vector2(playerPos.x - entity.pos.x, playerPos.y - entity.pos.y);
                     entity.setRotation(direction.angleDeg());
                 }
@@ -152,6 +155,7 @@ public class EntityManager {
     public void clearAllEntities(){
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
+            // dispose of entity assets and entity actor from stage
             entity.dispose();
             iter.remove();
         }
@@ -160,8 +164,12 @@ public class EntityManager {
     }
 
     public void setLoadedEntities(List<Entity> loadentity){
+        // function mainly for pause unpause feature
+        // see performResumeGame in simulation lifecycle
         for (Iterator<Entity> iter = loadedEntities.listIterator(); iter.hasNext(); ) {
             Entity entity = iter.next();
+            // dispose of entity assets and entity actor from stage
+            // ensures that stage is clean of entities before loading entities again
             entity.dispose();
             iter.remove();
         }

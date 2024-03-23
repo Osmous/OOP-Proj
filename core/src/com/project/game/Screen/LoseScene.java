@@ -22,14 +22,26 @@ public class LoseScene extends Scene{
     }
 
     public void show() {
+        // see EndScene for code comments. its all the same
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+
+        TextButton MuteButton = new TextButton("Mute BGM", skin);
+        MuteButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+                // hand back control to iomanager for game control
+                gameEngine.ioManager.playBGM();
+            }
+        });
+        table.add(MuteButton).pad(10);
+        table.row();
 
         Label titleLabel = new Label("BOO LOSER", skin);
         titleLabel.setFontScale(2);

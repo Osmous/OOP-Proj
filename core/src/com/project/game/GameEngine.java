@@ -64,4 +64,14 @@ public class GameEngine extends Game {
 		if (screen != null) screen.hide();
 		entityManager.clearAllEntities();
 	};
+	@Override
+	public void pause(){
+		simulationCycleManager.pauseGame();
+	}
+
+	@Override
+	public void resume(){
+		simulationCycleManager.pauseGame();
+	}
+
 }

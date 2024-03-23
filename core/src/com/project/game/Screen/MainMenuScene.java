@@ -29,11 +29,21 @@ public class MainMenuScene extends Scene {
         // see any implementation of io manager can do this
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal(this.gameEngine.config.getString("skinPathJson")));
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+        TextButton MuteButton = new TextButton("Mute BGM", skin);
+        MuteButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
+                // hand back control to iomanager for game control
+                gameEngine.ioManager.playBGM();
+            }
+        });
+        table.add(MuteButton).pad(10);
+        table.row();
 
         Label titleLabel = new Label("Space Game", skin);
         titleLabel.setFontScale(2); // Increase the font size (optional)

@@ -22,7 +22,6 @@ public class EntityFactory {
                 rec.width = tex.getWidth();
                 entity = new PlayerEntity(gameEngine.entityManager.nextID, new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
-//                gameEngine.entityManager.loadedEntities.add(player);
                 break;
             case ("enemy"):
                 tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
@@ -31,18 +30,14 @@ public class EntityFactory {
                 rec.width = tex.getWidth();
                 entity = new EnemyEntity(gameEngine.entityManager.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"),parameters.getInt("health"));
-//                gameEngine.entityManager.loadedEntities.add(enemy);
                 break;
             case ("projectile"):
                 tex = new Texture(Gdx.files.internal(parameters.getString("texturePath")));
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
-//                entity = new ProjectileEntity(gameEngine.entityManager.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
                 entity = new ProjectileEntity(gameEngine.entityManager.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
                         parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
-//                gameEngine.entityManager.loadedEntities.add(projectile);
                 break;
             default:
                 return null;

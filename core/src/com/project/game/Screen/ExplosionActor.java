@@ -29,6 +29,7 @@ public class ExplosionActor extends Actor {
 
         // Place the regions into a 1D array in the correct order, starting from the top
         // left, going across first. The Animation constructor requires a 1D array.
+        // Currently set to single row with 12 columns
         TextureRegion[] explosionFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
         for (int i = 0; i < FRAME_ROWS; i++) {
@@ -36,7 +37,7 @@ public class ExplosionActor extends Actor {
                 explosionFrames[index++] = tmp[i][j];
             }
         }
-
+        // change float value to desired frame duration
         explosionAnimation = new Animation<TextureRegion>(0.15f, explosionFrames);
 
     }

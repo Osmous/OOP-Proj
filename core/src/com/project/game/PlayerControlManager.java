@@ -86,19 +86,19 @@ public class PlayerControlManager {
         Vector2 direction = new Vector2(0,0);
         for (String keyCode: keyCodeList){
             switch (Integer.parseInt(keyCode)) {
-                case Input.Keys.LEFT:
+                case Input.Keys.A:
                     direction.x = direction.x-1;
                     movePlayerLeft(delta);
                     break;
-                case Input.Keys.RIGHT:
+                case Input.Keys.D:
                     direction.x = direction.x+1;
                     movePlayerRight(delta);
                     break;
-                case Input.Keys.UP:
+                case Input.Keys.W:
                     direction.y = direction.y+1;
                     movePlayerUp(delta);
                     break;
-                case Input.Keys.DOWN:
+                case Input.Keys.S:
                     direction.y = direction.y -1;
                     movePlayerDown(delta);
                     break;
