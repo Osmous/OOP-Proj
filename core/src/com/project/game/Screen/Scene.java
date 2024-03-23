@@ -10,19 +10,10 @@ public class Scene implements com.badlogic.gdx.Screen {
     protected OrthographicCamera camera;
 
     protected SpriteBatch batch;
-    protected BitmapFont font;
 
-    protected Scene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
+    protected Scene(GameEngine gameEngine, SpriteBatch batch) {
         this.gameEngine = gameEngine;
         this.batch = batch;
-        this.font = font;
-
-        this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, 1280, 720);
-    }
-
-    protected Scene(GameEngine gameEngine) {
-        this.gameEngine = gameEngine;
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, 1280, 720);
     }
@@ -39,7 +30,10 @@ public class Scene implements com.badlogic.gdx.Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        camera.viewportHeight=height;
+        camera.viewportWidth=width;
+        camera.position.set(camera.zoom * camera.viewportWidth / 2.0F, camera.zoom * camera.viewportHeight / 2.0F, 0.0F);
+        camera.update();
     }
 
     @Override
@@ -60,5 +54,9 @@ public class Scene implements com.badlogic.gdx.Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 }

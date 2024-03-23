@@ -10,8 +10,8 @@
       "posY": 100,
       "health": 2,
       "texturePath": "enemy.png",
-      "speed": 100,
-      "count": 10
+      "speed": 150,
+      "count": 20
     }
   ]
 }

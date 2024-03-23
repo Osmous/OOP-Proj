@@ -1,0 +1,128 @@
+//package com.project.game.IO;
+//
+//import com.badlogic.gdx.Gdx;
+//import com.badlogic.gdx.Input;
+//import com.badlogic.gdx.InputAdapter;
+//import com.badlogic.gdx.audio.Music;
+//import com.badlogic.gdx.audio.Sound;
+//import com.badlogic.gdx.math.Vector2;
+//import com.badlogic.gdx.math.Vector3;
+//import com.badlogic.gdx.utils.JsonValue;
+//import com.project.game.Entity.Entity;
+//import com.project.game.GameEngine;
+//import com.project.game.Screen.Scene;
+//
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.Map;
+//
+//public class IOManager extends InputAdapter {
+//    private GameEngine gameEngine;
+//    private List<String> keypressedlist;
+//    //    private boolean isButtonPressed;
+//    private Map<String,Sound> sounds;
+//    private Music backgroundMusic;
+//
+//
+//    public IOManager(GameEngine gameEngine) {
+//        this.gameEngine = gameEngine;
+//        this.keypressedlist = new ArrayList<String>();
+//        this.sounds = new HashMap<>();
+////        this.isButtonPressed = false;
+////        System.out.println(this.gameEngine.config.get("sounds").child());
+//        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(this.gameEngine.config.get("sounds").getString("bgMusic")));
+//        backgroundMusic.setLooping(true);
+//        backgroundMusic.play();
+//        for (JsonValue child = this.gameEngine.config.get("sounds").child(); child != null; child = child.next()) {
+////            System.out.println(child.asString());
+//            sounds.put(child.name, Gdx.audio.newSound(Gdx.files.internal(child.asString())));
+//        }
+////        System.out.println(sounds);
+//    }
+//
+//    @Override
+//    public boolean keyDown(int keycode) {
+////        if (keycode == Input.Keys.LEFT) {
+////            //gameEngine.playerControlManager.movePlayerLeft();
+////        } else if (keycode == Input.Keys.RIGHT) {
+////            //gameEngine.playerControlManager.movePlayerRight();
+////        }
+//        if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
+//            keypressedlist.add(Integer.toString(keycode));
+////            System.out.println(keycode);
+//        }
+//        if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
+//            gameEngine.simulationCycleManager.pauseGame();
+//        }
+//
+//        //FOR TESTING PURPOSE
+//        if(keycode == Input.Keys.P && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+//            List<Integer> holder = new ArrayList<Integer>();
+//            for(Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
+//                if (entity.getType().equals("enemy")) {
+//                    holder.add(entity.getEntityID());
+//                }
+//            }
+//            for(Integer id : holder){
+//                this.gameEngine.entityManager.deleteEntity(id);
+//            }
+//        }
+//        //FOR TESTING PURPOSE
+//        if(keycode == Input.Keys.L && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+//            Map<String, Object> data = new HashMap<>();
+//            data.put("health", this.gameEngine.entityManager.getPlayerHealth()-1);
+//            this.gameEngine.entityManager.updateEntity("updateHealth",this.gameEngine.entityManager.getPlayerEntityId(),data);
+//        }
+//
+//        return true;
+//    }
+//    @Override
+//    public boolean keyUp(int keycode){
+//        if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
+//            keypressedlist.remove(Integer.toString(keycode));
+//        }
+//
+//        return true;
+//    }
+//
+//    public List<String> getKeypressedlist() {
+//        return keypressedlist;
+//    }
+//    public void resetKeypressedList(){
+//        this.keypressedlist= new ArrayList<String>();
+//    }
+//    @Override
+//    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+////        if (!isButtonPressed) {
+////            isButtonPressed = true; // Set the button pressed flag to true
+//        // Handle the click event here
+//        Vector3 temp = ((Scene)this.gameEngine.sceneManager.getScreen()).getCamera().unproject(new Vector3((float) screenX,(float) screenY,0));
+//        this.gameEngine.playerControlManager.shoot(new Vector2(temp.x,temp.y));
+////            System.out.println(screenX);
+////            System.out.println(screenY);
+////        }
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+////        if (isButtonPressed) {
+////            isButtonPressed = false; // Set the button pressed flag to false
+////        }
+//        return true;
+//    }
+//
+//    public void reset(){
+//        this.keypressedlist = new ArrayList<String>();
+////        this.isButtonPressed = false;
+//    }
+//
+//    public void playSound(String sound){
+//        Sound gdxSound = sounds.get(sound);
+//        if (gdxSound !=null){
+//            gdxSound.play();
+//        }
+//    }
+//
+//}

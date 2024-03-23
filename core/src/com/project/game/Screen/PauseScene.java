@@ -18,8 +18,8 @@ public class PauseScene extends Scene{
 
     private Stage stage;
 
-    public PauseScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
-        super(gameEngine, batch, font);
+    public PauseScene(GameEngine gameEngine, SpriteBatch batch) {
+        super(gameEngine, batch);
     }
 
     public void show() {
@@ -28,7 +28,7 @@ public class PauseScene extends Scene{
         //using keyboard inputs as a way to unpuase (ESC key)
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(gameEngine.ioManager);
+        multiplexer.addProcessor(gameEngine.ioManager.getInputHandler());
         Gdx.input.setInputProcessor(multiplexer);
 
         Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
@@ -49,7 +49,7 @@ public class PauseScene extends Scene{
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
                 // hand back control to iomanager for game control
-                Gdx.input.setInputProcessor(gameEngine.ioManager);
+                Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
                 gameEngine.sceneManager.setCurrentScene("levelscene");
                 gameEngine.simulationCycleManager.pauseGame();
             }
@@ -76,6 +76,7 @@ public class PauseScene extends Scene{
     }
     @Override
     public void resize(int width, int height) {
+        super.resize(width,height);
         stage.getViewport().update(width, height, true);
     }
 }

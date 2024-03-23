@@ -2,8 +2,10 @@ package com.project.game.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.project.game.Entity.Entity;
 import com.project.game.GameEngine;
 import com.project.game.Screen.MainMenuScene;
@@ -27,7 +29,7 @@ public class SceneManager {
     }
 
     public void setMainScreen() {
-        this.gameEngine.setScreen(new MainMenuScene(this.gameEngine, this.batch, this.font));
+        this.gameEngine.setScreen(new MainMenuScene(this.gameEngine, this.batch));
         currentScene = "mainmenuscene";
     }
 
@@ -55,7 +57,7 @@ public class SceneManager {
             currentScene = "endscene";
             levelNum=0;
             gameEngine.getScreen().dispose();
-            gameEngine.setScreen(new LoseScene(gameEngine, batch, font));
+            gameEngine.setScreen(new LoseScene(gameEngine, batch));
             gameEngine.simulationCycleManager.endGame();
             return;
         }
@@ -80,14 +82,20 @@ public class SceneManager {
                 currentScene = "endscene";
                 levelNum=0;
                 gameEngine.getScreen().dispose();
-                gameEngine.setScreen(new EndScene(gameEngine, batch, font));
+                gameEngine.setScreen(new EndScene(gameEngine, batch));
                 gameEngine.simulationCycleManager.endGame();
                 return;
             }
             levelNum = levelNum +1;
             gameEngine.getScreen().dispose();
-            gameEngine.setScreen(new LevelScene(gameEngine, batch, font, getLevelScenePath(String.valueOf(levelNum))));
+            gameEngine.setScreen(new LevelScene(gameEngine, batch, getLevelScenePath(String.valueOf(levelNum))));
         }
+    }
+
+    public void explosion(Vector2 pos){
+        ExplosionActor explosion = new ExplosionActor(gameEngine.config.getString("explosionTexture"));
+        explosion.setPosition(pos.x, pos.y);
+        ((LevelScene)gameEngine.getScreen()).getStage().addActor(explosion);
     }
 
 
@@ -121,5 +129,9 @@ public class SceneManager {
             return;
         }
         this.levelNum = levelNum;
+    }
+
+    public Screen getScreen(){
+        return gameEngine.getScreen();
     }
 }

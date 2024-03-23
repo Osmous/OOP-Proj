@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class MainMenuScene extends Scene {
     private Stage stage;
 
-    public MainMenuScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
-        super(gameEngine, batch, font);
+    public MainMenuScene(GameEngine gameEngine, SpriteBatch batch) {
+        super(gameEngine, batch);
     }
 
     @Override
@@ -47,11 +47,11 @@ public class MainMenuScene extends Scene {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
                 // hand back control to iomanager for game control
-                Gdx.input.setInputProcessor(gameEngine.ioManager);
+                Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
                 gameEngine.sceneManager.setCurrentScene("levelscene");
                 int levelNum=gameEngine.sceneManager.getLevelNum();
                 gameEngine.sceneManager.setLevelNum(levelNum+1);
-                gameEngine.setScreen(new LevelScene(gameEngine, batch, font, gameEngine.sceneManager.getLevelScenePath(String.valueOf(levelNum+1))));
+                gameEngine.setScreen(new LevelScene(gameEngine, batch, gameEngine.sceneManager.getLevelScenePath(String.valueOf(levelNum+1))));
             }
         });
 
@@ -98,6 +98,7 @@ public class MainMenuScene extends Scene {
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        super.resize(width,height);
+//        stage.getViewport().update(width, height, true);
     }
 }

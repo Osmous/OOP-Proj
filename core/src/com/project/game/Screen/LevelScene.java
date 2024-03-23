@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class LevelScene extends Scene {
 
-    private Stage stage;
+    protected Stage stage;
     private JsonValue levelData;
     private HealthBar healthBar;
     private Texture backgroundTexture;
@@ -35,54 +35,57 @@ public class LevelScene extends Scene {
     private JsonValue enemyData;
     private int spawnIntveral;
 
-    public LevelScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font, String levelPath) {
-        super(gameEngine, batch, font);
+    public LevelScene(GameEngine gameEngine, SpriteBatch batch, String levelPath) {
+        super(gameEngine, batch);
         // load level data from json file.
         JsonReader json = new JsonReader();
         this.levelData = json.parse(Gdx.files.internal(levelPath));
         this.spawnIntveral = this.levelData.getInt("spawnintervalmillis");
         nextSpawnTime=0;
 
-        // call entityManager to create non enemy entity
-        for (JsonValue entitydata : this.levelData.get("entities")) {
-            if (!entitydata.getString("type").equals("enemy")) {
-                // call entityManager to create non enemy entity
-                this.gameEngine.entityManager.createEntity(entitydata);
-            }else{
-                enemyData = entitydata;
-                enemyCount=entitydata.getInt("count");
-            }
-        }
         backgroundTexture = new Texture(Gdx.files.internal(this.levelData.getString("backgroundimage")));
         backgroundImage = new Image(backgroundTexture);
 
     }
 
     public void show() {
-        stage = new Stage(new ScreenViewport());
+        if(!this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSED")) {
+            stage = new Stage(new ScreenViewport());
 
-        //set input processer for level to ioManager
-        Gdx.input.setInputProcessor(gameEngine.ioManager);
+            //set input processer for level to ioManager
+            Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
 
-        Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
+            Skin skin = new Skin(Gdx.files.internal("starsoldierui/star-soldier-ui.json"));
 
-        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage.addActor(backgroundImage);
+            backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            stage.addActor(backgroundImage);
 
-        for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()){
-            stage.addActor(entity);
+            // call entityManager to create non enemy entity
+            for (JsonValue entitydata : this.levelData.get("entities")) {
+                if (!entitydata.getString("type").equals("enemy")) {
+                    // call entityManager to create non enemy entity
+                    this.gameEngine.entityManager.createEntity(entitydata);
+                } else {
+                    enemyData = entitydata;
+                    enemyCount = entitydata.getInt("count");
+                }
+            }
+
+//        for (Entity entity: this.gameEngine.entityManager.getLoadedEntity()){
+//            stage.addActor(entity);
+//        }
+
+            Table table = new Table();
+            table.setFillParent(true);
+            stage.addActor(table);
+
+            Label titleLabel = new Label("health", skin);
+            table.add(titleLabel).fill().uniform();
+
+            healthBar = new HealthBar(gameEngine.entityManager.getPlayerHealth());
+            table.add(healthBar).fill().uniform().padLeft(5);
+            table.top().left().padTop(5);
         }
-
-        Table table = new Table();
-        table.setFillParent(true);
-        stage.addActor(table);
-
-        Label titleLabel = new Label("health", skin);
-        table.add(titleLabel).fill().uniform();
-
-        healthBar = new HealthBar(gameEngine.entityManager.getPlayerHealth());
-        table.add(healthBar).fill().uniform().padLeft(5);
-        table.top().left().padTop(5);
     }
 
     @Override
@@ -90,18 +93,24 @@ public class LevelScene extends Scene {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         healthBar.setHealth(gameEngine.entityManager.getPlayerHealth());
         gameEngine.entityManager.updateEnemyRotation();
+        stage.act();
         stage.draw();
         spawnEnemy();
     }
 
     @Override
     public void resize(int width, int height) {
+        super.resize(width,height);
         stage.getViewport().update(width, height, true);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public Stage getStage() {
         return stage;
+    }
+    public LevelScene setStage(Stage stage){
+        this.stage = stage;
+        return this;
     }
 
     public void spawnEnemy(){

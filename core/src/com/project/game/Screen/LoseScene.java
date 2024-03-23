@@ -17,8 +17,8 @@ public class LoseScene extends Scene{
 
     private Stage stage;
 
-    public LoseScene(GameEngine gameEngine, SpriteBatch batch, BitmapFont font) {
-        super(gameEngine, batch, font);
+    public LoseScene(GameEngine gameEngine, SpriteBatch batch) {
+        super(gameEngine, batch);
     }
 
     public void show() {
@@ -43,7 +43,7 @@ public class LoseScene extends Scene{
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
                 // hand back control to iomanager for game control
-                Gdx.input.setInputProcessor(gameEngine.ioManager);
+                Gdx.input.setInputProcessor(gameEngine.ioManager.getInputHandler());
                 gameEngine.sceneManager.setMainScreen();
                 gameEngine.simulationCycleManager.setCurrentStateIdle();
             }
@@ -70,6 +70,7 @@ public class LoseScene extends Scene{
     }
     @Override
     public void resize(int width, int height) {
+        super.resize(width,height);
         stage.getViewport().update(width, height, true);
     }
 }

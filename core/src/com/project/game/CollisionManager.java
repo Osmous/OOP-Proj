@@ -1,6 +1,7 @@
 package com.project.game;
 
 import com.badlogic.gdx.Gdx;
+import com.project.game.Entity.EnemyEntity;
 import com.project.game.Entity.Entity;
 import com.project.game.Entity.EntityManager;
 
@@ -74,13 +75,17 @@ public class CollisionManager {
 
         // Player entity's health reaches zero
         if (entity1.getType().equals("player")) {
-            if (entity2.getType().equals("projectile") || entity2.getType().equals("enemy")) {
+//            if (entity2.getType().equals("projectile") || entity2.getType().equals("enemy")) {
+            if (entity2.getType().equals("enemy")) {
                 // Damage the player entity
                 int playerHealth = this.gameEngine.entityManager.getPlayerHealth();
                 playerHealth--;
                 Map<String, Object> healthData = new HashMap<>();
                 healthData.put("health", playerHealth);
                 entityManager.updateEntity("updateHealth", entity1.getEntityID(), healthData);
+                //
+                entityManager.updateEntity("playerHitFlash", entity1.getEntityID(), null);
+                this.gameEngine.ioManager.playSound("playerDamage");
 
                 if (playerHealth <= 0) {
                     // Delete the player entity immediately
@@ -91,9 +96,18 @@ public class CollisionManager {
 
         // Player Projectile collide with enemy
         else if (entity1.getType().equals("projectile") && entity2.getType().equals("enemy")) {
+            // generate explosion animation on hit enemy with projectile
+            this.gameEngine.sceneManager.explosion(entity2.getPos());
+            this.gameEngine.ioManager.playSound("explosion");
             // Mark the enemy entity for deletion
             entityManager.deleteEntity(entity1.getEntityID());
-            entityManager.deleteEntity(entity2.getEntityID());
+            // handle enemy health check
+            if (((EnemyEntity)entity2).getHealth() -1 == 0){
+                entityManager.deleteEntity(entity2.getEntityID());
+            } else {
+                ((EnemyEntity)entity2).setHealth(((EnemyEntity)entity2).getHealth()-1);
+            }
+
         }
 
         // Set cooldown for the player entity

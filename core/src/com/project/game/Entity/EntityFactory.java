@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.project.game.GameEngine;
+import com.project.game.Screen.LevelScene;
 
 public class EntityFactory {
     public Entity createEntity(JsonValue parameters, GameEngine gameEngine){
@@ -37,15 +38,16 @@ public class EntityFactory {
                 rec = new Rectangle();
                 rec.height = tex.getHeight();
                 rec.width = tex.getWidth();
+//                entity = new ProjectileEntity(gameEngine.entityManager.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
+//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
                 entity = new ProjectileEntity(gameEngine.entityManager.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(200, 500));
-//                ProjectileEntity bullet = new ProjectileEntity(this.nextID,new Vector2(parameters.getFloat("posX"), parameters.getFloat("posY")),
-//                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
+                        parameters.getString("type"), tex, rec,parameters.getFloat("speed"), new Vector2(parameters.getFloat("mousePosX"), parameters.getFloat("mousePosY")));
 //                gameEngine.entityManager.loadedEntities.add(projectile);
                 break;
             default:
                 return null;
         }
+        ((LevelScene)gameEngine.sceneManager.getScreen()).getStage().addActor(entity);
         gameEngine.entityManager.nextID++;
         return entity;
     }

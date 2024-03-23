@@ -1,44 +1,39 @@
-package com.project.game;
+package com.project.game.IO;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.project.game.Entity.Entity;
+import com.project.game.GameEngine;
+import com.project.game.Screen.Scene;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IOManager extends InputAdapter {
+public class InputHandler extends InputAdapter {
     private GameEngine gameEngine;
     private List<String> keypressedlist;
-    private boolean isButtonPressed;
+    //    private boolean isButtonPressed;
 
-
-    public IOManager(GameEngine gameEngine) {
+    public InputHandler(GameEngine gameEngine) {
         this.gameEngine = gameEngine;
         this.keypressedlist = new ArrayList<String>();
-        this.isButtonPressed = false;
 
     }
 
     @Override
     public boolean keyDown(int keycode) {
-//        if (keycode == Input.Keys.LEFT) {
-//            //gameEngine.playerControlManager.movePlayerLeft();
-//        } else if (keycode == Input.Keys.RIGHT) {
-//            //gameEngine.playerControlManager.movePlayerRight();
-//        }
         if (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING")){
             keypressedlist.add(Integer.toString(keycode));
-//            System.out.println(keycode);
         }
-        if(keycode == Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
+        if(keycode == com.badlogic.gdx.Input.Keys.ESCAPE && (this.gameEngine.simulationCycleManager.getCurrentState().equals("RUNNING") || this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE") )){
             gameEngine.simulationCycleManager.pauseGame();
         }
 
         //FOR TESTING PURPOSE
-        if(keycode == Input.Keys.P && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+        if(keycode == com.badlogic.gdx.Input.Keys.P && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
             List<Integer> holder = new ArrayList<Integer>();
             for(Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
                 if (entity.getType().equals("enemy")) {
@@ -50,7 +45,7 @@ public class IOManager extends InputAdapter {
             }
         }
         //FOR TESTING PURPOSE
-        if(keycode == Input.Keys.L && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+        if(keycode == com.badlogic.gdx.Input.Keys.L && this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
             Map<String, Object> data = new HashMap<>();
             data.put("health", this.gameEngine.entityManager.getPlayerHealth()-1);
             this.gameEngine.entityManager.updateEntity("updateHealth",this.gameEngine.entityManager.getPlayerEntityId(),data);
@@ -75,24 +70,19 @@ public class IOManager extends InputAdapter {
     }
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (!isButtonPressed) {
-            isButtonPressed = true; // Set the button pressed flag to true
-            // Handle the click event here
+        // Handle the click event here
+        if (this.gameEngine.sceneManager.getCurrentScene().equals("levelscene")){
+            Vector3 temp = ((Scene)this.gameEngine.sceneManager.getScreen()).getCamera().unproject(new Vector3((float) screenX,(float) screenY,0));
+            this.gameEngine.playerControlManager.shoot(new Vector2(temp.x,temp.y));
         }
+
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (isButtonPressed) {
-            isButtonPressed = false; // Set the button pressed flag to false
-        }
-        return true;
-    }
 
-    public void reset(){
-        this.keypressedlist = new ArrayList<String>();
-        this.isButtonPressed = false;
+        return true;
     }
 
 }

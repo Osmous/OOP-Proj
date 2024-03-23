@@ -19,14 +19,7 @@
       "health": 1,
       "texturePath": "enemy.png",
       "speed": 100,
-      "count": 6
-    },
-    {
-      "type": "projectile",
-      "posX": 100,
-      "posY": 100,
-      "texturePath": "bullet.png",
-      "speed": 100
+      "count": 1
     }
   ]
 }

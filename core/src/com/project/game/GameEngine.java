@@ -2,16 +2,17 @@ package com.project.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.project.game.Entity.EntityManager;
+import com.project.game.IO.IOManager;
 import com.project.game.Screen.SceneManager;
 import com.project.game.SimulationLifeCycle.SimulationCycleManager;
 
 public class GameEngine extends Game {
 	private String gameConfigPath;
 	public JsonValue config;
-
 	public EntityManager entityManager;
 	public AIControlManager aiControlManager;
 	public PlayerControlManager playerControlManager;
@@ -19,7 +20,6 @@ public class GameEngine extends Game {
 	public CollisionManager collisionManager;
 	public SimulationCycleManager simulationCycleManager;
 	public SceneManager sceneManager;
-
 	public void loadConfig(){
 		//load game specific configs.
 		JsonReader json = new JsonReader();
@@ -28,6 +28,10 @@ public class GameEngine extends Game {
 	}
 	@Override
 	public void create() {
+		// load global configs for game
+		gameConfigPath = "config.json";
+		loadConfig();
+
 		// Init all managers
 		entityManager = new EntityManager(this);
 		aiControlManager = new AIControlManager(this);
@@ -36,15 +40,16 @@ public class GameEngine extends Game {
 		collisionManager = new CollisionManager(this);
 		simulationCycleManager = new SimulationCycleManager(this);
 		sceneManager = new SceneManager(this);
-		Gdx.input.setInputProcessor(ioManager);
-		gameConfigPath = "config.json";
-		loadConfig();
+		Gdx.input.setInputProcessor(ioManager.getInputHandler());
 
 		//set Main Screen as first Screen
 		sceneManager.setMainScreen();
+
+
 	};
 	@Override
 	public void render() {
+		// render() function is main process loop
 		// render scenes
 		sceneManager.render();
 		// Check Collision
@@ -59,5 +64,4 @@ public class GameEngine extends Game {
 		if (screen != null) screen.hide();
 		entityManager.clearAllEntities();
 	};
-
 }
