@@ -64,6 +64,9 @@ public class LevelScene extends Scene {
         // this works because this show() function is called in setScreen which is called before simulationlifecycle
         // changes the gameState enum variable.
         if (!this.gameEngine.simulationCycleManager.getCurrentState().equals("PAUSE")) {
+            for(Entity entity : this.gameEngine.entityManager.getLoadedEntity()){
+                stage.addActor(entity);
+            }
             // call entityManager to create non enemy entity
             for (JsonValue entitydata : this.levelData.get("entities")) {
                 if (!entitydata.getString("type").equals("enemy")) {
@@ -95,6 +98,7 @@ public class LevelScene extends Scene {
         stage.act();
         stage.draw();
         spawnEnemy();
+
     }
 
     @Override
