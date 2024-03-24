@@ -11,15 +11,15 @@ import com.project.game.Screen.SceneManager;
 import com.project.game.SimulationLifeCycle.SimulationCycleManager;
 
 public class GameEngine extends Game {
-	private String gameConfigPath;
-	public JsonValue config;
-	public EntityManager entityManager;
-	public AIControlManager aiControlManager;
-	public PlayerControlManager playerControlManager;
-	public IOManager ioManager;
-	public CollisionManager collisionManager;
-	public SimulationCycleManager simulationCycleManager;
-	public SceneManager sceneManager;
+	private static String gameConfigPath;
+	public static JsonValue config;
+	public static EntityManager entityManager;
+	public static AIControlManager aiControlManager;
+	public static PlayerControlManager playerControlManager;
+	public static IOManager ioManager;
+	public static CollisionManager collisionManager;
+	public static SimulationCycleManager simulationCycleManager;
+	public static SceneManager sceneManager;
 	public void loadConfig(){
 		//load game specific configs.
 		JsonReader json = new JsonReader();
