@@ -38,7 +38,7 @@ public class MainMenuScene extends Scene {
         MuteButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, com.badlogic.gdx.scenes.scene2d.Actor actor) {
-                // hand back control to iomanager for game control
+                // toggle background music
                 gameEngine.ioManager.playBGM();
             }
         });
